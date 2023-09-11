@@ -9,10 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header >
+    <header>
         <nav class="highest-part">
             <h4>Let's Chat!</h4>
-            <h4>Profile</h4>
+            <a asp-area="" asp-controller="Home" asp-action="Profile">Profile</a>
             @* <button
             aria-expanded="false" aria-label="Toggle navigation">
             <span></span>
@@ -20,18 +20,18 @@
             <div>
                 <partial name="_LoginPartial.cshtml" />
             </div>
-        
+
         </nav>
     </header>
 
-    <div>
-        <main class="main-container" role="main">
-            @(await Html.PartialAsync("Sidebar"))
-            @RenderBody()
+
+    <main class="main-container" role="main">
+        @(await Html.PartialAsync("Sidebar"))
+        @RenderBody()
 
 
-        </main>
-    </div>
+    </main>
+
 
     <footer>
         <div>
