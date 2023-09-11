@@ -1,9 +1,9 @@
-﻿using HermesChat_TeamA.Areas.Identity.Data;
+﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HermesChat_TeamA.Data;
+namespace HermesChat_TeamA.Areas.Identity.Data;
 
 public class HermesChatDbContext : IdentityDbContext<User>
 {
