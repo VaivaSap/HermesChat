@@ -6,5 +6,12 @@
 
 		public void ChangeName(string name) 
 		{ _name = name; }
+
+		public void AddUsers (User user)
+		{
+			_users.Add(user);
+			//will need improvement
+			//also needs to be saved to database
+		}
 	}
 }
