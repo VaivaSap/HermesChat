@@ -2,12 +2,14 @@
 {
     public class Conversation
     {
+        public Conversation() { }
+        public string Id { get; set; }
         protected List<User> _users = new List<User>();
         protected List<Message> _messages = new List<Message>();
         public void AddMessagetoConversation (string messageBody, User sender, User receiver)
         {
             _messages.Add(new Message { MessageBody = messageBody, senderId = sender.Id, 
-                receiverId = receiver.Id, SentDate = DateTime.Now});
+                receiverId = receiver.Id, SentDate = DateTime.Now.ToString()});
             //should make an auto generated Id, 
             //also should either add code to save message to database,
             //or reference a function from service class that would do it

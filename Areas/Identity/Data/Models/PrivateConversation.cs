@@ -2,6 +2,7 @@
 {
 	public class PrivateConversation : Conversation
 	{
+		public PrivateConversation() { }
 		public PrivateConversation(User user1, User user2) 
 		{
 			_users.Add(user1);
