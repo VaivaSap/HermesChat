@@ -24,14 +24,23 @@
         
         <div class="grape-inner-background">
 
+            <div>Connection Id</div>
+            <div><span id="connectionId"></span></div>
+            
+
             <div><input class="input" placeholder="Write your name..." type="text" id="userInput" /></div>
             @* <input class="input" placeholder="Write your reply..."></input> *@
 
 
           
             <div><input class="input" type="text" id="messageInput" placeholder="Write your reply..." /></div>
+
+            <div>Receiver Id</div>
+            <div><input type="text" id="receiverId"/></div>
+
             <div class="submit-button">
-                <input type="button" id="sendButton" value="Send Message" />
+                <input type="button" id="sendToParticularUser" value="Send Message" />&nbsp; &nbsp;
+                <input type="button" id="sendButton" value="Send Message To All" />
             </div>
         </div>
     </div>
