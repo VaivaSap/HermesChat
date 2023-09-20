@@ -1,20 +1,20 @@
 using HermesChat_TeamA.Areas.Identity.Data;
-using HermesChat_TeamA.Data;
+using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using HermesChat_TeamA.Hubs;
 
 namespace HermesChat_TeamA
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-			builder.Services.AddDbContext<HermesChat_TeamA.Data.HermesChatDbContext>(options => options.UseSqlServer(connectionString));
+			builder.Services.AddDbContext<HermesChatDbContext>(options => options.UseSqlServer(connectionString));
 
-			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HermesChat_TeamA.Data.HermesChatDbContext>();
+			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HermesChatDbContext>();
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
