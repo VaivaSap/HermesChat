@@ -45,7 +45,7 @@ document.getElementById("sendToParticularUser").addEventListener("click", functi
     var receiverConnectionId = document.getElementById("receiverId").value;
     var message = document.getElementById("messageInput").value;
     console.log(connection);
-    connection.invoke("SendMessage", user, receiverConnectionId, message).catch(function (err) {
+    connection.invoke("SendToParticularUser", user, receiverConnectionId, message).catch(function (err) {
         return console.error(err.toString());
     });
 
