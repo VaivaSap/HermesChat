@@ -65,7 +65,20 @@ body {
     font-weight: 600;
 }
 
+.ids-fields {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 15px;
+}
 
+.connection-id {
+    color: white;
+    background-color: #89023e;
+    height: 20px;
+    width: 130px;
+    font-weight: 600;
+    padding-top: 5px;
+}
 
 .list-area {
     display: flex;
@@ -106,6 +119,9 @@ body {
     font-size: 14px;
 }
 
+.name-input {
+    display: none;
+}
 
 .second-user {
     display: flex;
@@ -137,7 +153,27 @@ body {
     font-family: "Gill Sans", sans-serif;
     width: 100%;
     font-size: 16px;
-    padding-left: 14px;
+   
+}
+
+.submit-button{
+    display:flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.messaging-area{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+
+}
+
+.message-input{
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    padding: 2px 10px;
 }
 
 .profile-main {
