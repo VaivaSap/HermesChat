@@ -46,3 +46,18 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+
+.participants-list-column {
+    width: 23%;
+    height: 100%;
+    color: #30343f;
+}
+
+.chat-button {
+    
+    color:white;
+    border-color: white;
+    background-color: #89023e;
+
+}

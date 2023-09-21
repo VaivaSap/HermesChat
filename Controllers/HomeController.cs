@@ -18,7 +18,7 @@ namespace HermesChat_TeamA.Controllers
 			return View();
 		}
 
-		public IActionResult Privacy()
+		public IActionResult Profile()
 		{
 			return View();
 		}

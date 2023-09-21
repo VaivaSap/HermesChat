@@ -1,6 +1,7 @@
 using HermesChat_TeamA.Areas.Identity.Data;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using HermesChat_TeamA.Hubs;
 
 namespace HermesChat_TeamA
 {
@@ -16,10 +17,13 @@ namespace HermesChat_TeamA
 			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HermesChatDbContext>();
 
 			// Add services to the container.
-			builder.Services.AddControllersWithViews();
+			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			builder.Services.AddRazorPages();
+			builder.Services.AddSignalR();
+			builder.WebHost.UseStaticWebAssets();
 
-			var app = builder.Build();
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
@@ -39,6 +43,7 @@ namespace HermesChat_TeamA
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+			app.MapHub<SyncHub>("/syncHub");
 			app.MapRazorPages();
 			app.Run();
 		}
