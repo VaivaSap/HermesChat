@@ -34,5 +34,37 @@ public class ConnectedUsersHub : Hub
     {
         return Context.ConnectionId;
     }
+
+
+    //Any ideas why this code is not working?
+
+
+
+    //static HashSet<string> CurrentConnections = new HashSet<string>();
+
+    //public override Task OnConnectedAsync()
+    //{
+    //    var connectedUserId = Context.ConnectionId;
+    //    CurrentConnections.Add(connectedUserId);
+
+    //    return base.OnConnectedAsync();
+    //}
+
+    //public override System.Threading.Tasks.Task OnDisconnected()
+    //{
+    //    var connection = CurrentConnections.FirstOrDefault(x => x == Context.ConnectionId);
+
+    //    if (connection != null)
+    //    {
+    //        CurrentConnections.Remove(connection);
+    //    }
+
+    //    return base.OnDisconnected();
+    //}
+
+    //public List<string> GetConnectedUsers()
+    //{
+    //    return CurrentConnectedUsers.ToList();
+    //}
 }
 
