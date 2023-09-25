@@ -43,8 +43,11 @@ namespace HermesChat_TeamA
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
-			app.MapHub<SyncHub>("/syncHub");
+			app.MapHub<SyncHub>("/SyncHub");
+			app.MapHub<ConnectedUsersHub>("/ConnectedUsersHub");
 			app.MapRazorPages();
+	
+			
 			app.Run();
 		}
 	}

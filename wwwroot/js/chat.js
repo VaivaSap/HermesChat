@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/syncHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/SyncHub").build();
 
 document.getElementById("sendButton").disabled = true;
 
@@ -19,7 +19,7 @@ connection.on("ReceiveMessage", function (user, message, sentAt) {
 connection.start().then(function () {
     connection.invoke("GetConnectionId").then(function (id) {
         document.getElementById("connectionId").innerText = id;
-        Console.log(id);
+        console.log(id);
     });
     document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
