@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA.Hubs;
 
@@ -8,13 +9,15 @@ public class ConnectedUsersHub : Hub
 
     static HashSet<string> CurrentConnections = new HashSet<string>();
 
+   //Context.User.Identity.Name?? 
+
     public override async Task OnConnectedAsync()
     {
         //adding up users when they connect
         UsersCount++;
         await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
 
-        var connectedUser = Context.UserIdentifier;
+        var connectedUser = Context.User.Identity.Name;
         CurrentConnections.Add(connectedUser);
 
         await Clients.All.SendAsync("OnlineUsersList", CurrentConnections);
@@ -28,7 +31,8 @@ public class ConnectedUsersHub : Hub
         UsersCount--;
         await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
 
-        var connectedUser = CurrentConnections.FirstOrDefault(x => x == Context.UserIdentifier);
+        var connectedUser = CurrentConnections.FirstOrDefault(x => x == Context.User.Identity.Name);
+
 
         if (connectedUser != null)
         {

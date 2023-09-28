@@ -1,10 +1,12 @@
 ﻿using HermesChat_TeamA.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA.Hubs;
 
 public class SyncHub : Hub
 {
+    [Authorize]
     public async Task SendMessage(string user, string message)
     {
       await  Clients.All.SendAsync("ReceiveMessage", Context.User.Identity.Name?? "anonymous", message, DateTime.Now);
