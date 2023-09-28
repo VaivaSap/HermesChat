@@ -17,6 +17,22 @@ public class SyncHub : Hub
         await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", Context.User.Identity.Name?? "anonymous", message);
     }
 
+   // Šitas turėtų būti geras, bet nesutvarkyta chat.js
+
+
+    //public async Task AddToGroup(string groupName)
+    //{
+    //    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+
+    //    await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.ConnectionId} has joined the group {groupName}.");
+    //}
+
+    //public async Task RemoveFromGroup(string groupName)
+    //{
+    //    await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+    //    await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.ConnectionId} has left the group {groupName}.");
+    //}
     public string GetConnectionId() => Context.ConnectionId;
   
 }
