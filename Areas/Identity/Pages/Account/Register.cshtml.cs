@@ -12,16 +12,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using HermesChat_TeamA.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using System.Net.Mail;
-using System.Security.Cryptography.X509Certificates;
-using System.Net;
+using HermesChat_TeamA.Areas.Identity.Data.Models;
 
 namespace HermesChat_TeamA.Areas.Identity.Pages.Account
 {
@@ -81,11 +78,11 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
-
+            
             /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+                                             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+                                             ///     directly from your code. This API may change or be removed in future releases.
+                                             /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -126,7 +123,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
+                user.LastName =Input.LastName;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -145,7 +142,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -167,53 +164,28 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
+
+        private User CreateUser()
         {
             try
             {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-
-                message.From = new MailAddress("testastestaustas43@gmail.com");
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = confirmLink;
-
-                smtpClient.Port = 587;
-                smtpClient.Host = "smtp.gmail.com";
-
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("testastestauskas43@gmail.com", "vkdpimzmrkqphlaq");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-                return true;
+                return Activator.CreateInstance<User>();
             }
-            catch (Exception)
-            { return false; }
-        }
-            private User CreateUser()
+            catch
             {
-                try
-                {
-                    return Activator.CreateInstance<User>();
-                }
-                catch
-                {
-                    throw new InvalidOperationException($"Can't create an instance of '{nameof(Data.User)}'. " +
-                        $"Ensure that '{nameof(Data.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                        $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-                }
-            }
-
-            private IUserEmailStore<User> GetEmailStore()
-            {
-                if (!_userManager.SupportsUserEmail)
-                {
-                    throw new NotSupportedException("The default UI requires a user store with email support.");
-                }
-                return (IUserEmailStore<User>)_userStore;
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Data.Models.User)}'. " +
+                    $"Ensure that '{nameof(Data.Models.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-    } 
+
+        private IUserEmailStore<User> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<User>)_userStore;
+        }
+    }
+}

@@ -1,0 +1,32 @@
+﻿@page
+@model HermesChat_TeamA.Models.SidebarModel
+@{
+
+}
+
+<div class="participants-list-column">
+    <div class="grouped-buttons">
+        <button class="chat-button btn-primary">
+            Private Chat
+        </button>
+        <button class="chat-button">
+            Group Chat
+        </button>
+    </div>
+    <div class="total">
+        <div>Connected Users: </div>
+        <div><span id="usersCount" /></div>
+    </div>
+ 
+    <div class="list-area">
+
+        @*  // displayed list of users who are connected
+        *@
+        <div class="participants-names">
+            
+             <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
+
+        </div>
+    </div>
+</div>
+

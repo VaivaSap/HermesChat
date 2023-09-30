@@ -2,7 +2,63 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Hermes Chat</h1>
-    <h1 class="display-4">Let's chat</h1>
+
+<main class="chat-part">
+    <div class="hermes-banner">
+        <h1>Hermes</h1>
     </div>
+
+
+    <div class="chat-window">
+        @* <div class="first-user">User</div> *@
+        @* <div class="second-user">Selling my soul to the devil every day for a few pennies...</div> *@
+
+
+        <ul id="messagesList"></ul>
+
+    </div>
+
+
+
+    <div class="writing-area-for-messages">
+
+        <div class="grape-inner-background">
+
+            <div class="ids-fields">
+
+            <div class="connection-id">Connection Id: </div>
+            <div><span id="connectionId" /></div>
+
+            <div class="connection-id">Receiver Id: </div>
+            <div><input class="input" placeholder="Copy the connection ID..." type="text" id="receiverId" /></div>
+
+            </div>
+
+            @* not seen in the page view *@
+
+            <div><input class="name-input" placeholder="Write your name..." type="text" id="userInput" /></div>
+            @* <input class="input" placeholder="Write your reply..."></input> *@
+
+
+            <div class="messaging-area">
+
+            <div class="message-input"><input class="input" type="text" id="messageInput" placeholder="Write your reply..." onfocus="this.value =' '" /></div>
+
+         
+
+            <div class="submit-button">
+                <input type="button" id="sendToParticularUser" value="Send Message" />&nbsp; &nbsp;
+                <input type="button" id="sendButton" value="Send Message To All" />
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</main>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+<script src="~/js/connectedUsers.js"></script>
