@@ -193,7 +193,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
             catch (Exception)
             { return false; }
         }
-            private User CreateUser()
+            /*private User CreateUser()
             {
                 try
                 {
@@ -205,7 +205,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                         $"Ensure that '{nameof(Data.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                         $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
                 }
-            }
+            }*/
         private User CreateUser()
         {
             try

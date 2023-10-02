@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Net.Mail;
 using System.Net;
+using HermesChat_TeamA.Areas.Identity.Data.Models;
 
 namespace HermesChat_TeamA.Areas.Identity.Pages.Account
 {

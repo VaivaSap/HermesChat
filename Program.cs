@@ -1,5 +1,4 @@
 using HermesChat_TeamA.Areas.Identity.Data;
-using HermesChat_TeamA.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
@@ -19,7 +18,7 @@ namespace HermesChat_TeamA
 
 			builder.Services.AddDbContext<HermesChatDbContext>(options => options.UseSqlServer(connectionString));
 
-			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChat_TeamA.Data.HermesChatDbContext>();
+			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChat_TeamA.Areas.Identity.Data.HermesChatDbContext>();
       
 
             builder.Services.AddControllers();
@@ -43,7 +42,7 @@ namespace HermesChat_TeamA
                         Url = new Uri("https://example.com/contact"),
                     },
                 });
-			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<HermesChatDbContext>();
+			//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChatDbContext>();
 
             });
             // Add services to the container.
