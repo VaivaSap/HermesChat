@@ -20,7 +20,8 @@ namespace HermesChat_TeamA
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			builder.Services.AddRazorPages();
 			builder.Services.AddSignalR();
-			builder.WebHost.UseStaticWebAssets();
+            builder.Services.AddSingleton<ListOfGroupsRepository>(); 
+            builder.WebHost.UseStaticWebAssets();
 
 
             var app = builder.Build();
@@ -45,7 +46,9 @@ namespace HermesChat_TeamA
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 			app.MapHub<SyncHub>("/SyncHub");
 			app.MapHub<ConnectedUsersHub>("/ConnectedUsersHub");
-			app.MapRazorPages();
+       
+           
+            app.MapRazorPages();
 	
 			
 			app.Run();

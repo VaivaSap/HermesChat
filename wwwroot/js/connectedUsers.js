@@ -6,8 +6,6 @@ var connectionUsersCount = new signalR.HubConnectionBuilder().withUrl("/Connecte
 //document.getElementById("sendButton").disabled = true;
 
 
-/*adding an event handler to spark action when smth new happens*/
-
 connectionUsersCount.on("OnlineUsersCount", (value) => {
     console.log("successful", value);
     var newCountSpan = document.getElementById("usersCount");
