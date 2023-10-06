@@ -129,9 +129,13 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt. You should be registered.");
+                    _logger.LogWarning("LALALALLALLAL.");
+                    Thread.Sleep(5000);
+                    //return Page();
+                    return RedirectToPage("./Register");
                 }
+
             }
 
             // If we got this far, something failed, redisplay form
