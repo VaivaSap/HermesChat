@@ -2,6 +2,7 @@ using HermesChat_TeamA.Areas.Identity.Data;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using HermesChat_TeamA.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA
 {
@@ -19,10 +20,13 @@ namespace HermesChat_TeamA
 			// Add services to the container.
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			builder.Services.AddRazorPages();
+            builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>(); 
 			builder.Services.AddSignalR();
-            builder.Services.AddSingleton<ListOfGroupsRepository>(); 
             builder.WebHost.UseStaticWebAssets();
 
+            //builder.Services.AddServerSideBlazor().AddHubOptions(options => {
+            //    options.MaximumReceiveMessageSize = null; // no limit or use a number
+            //});
 
             var app = builder.Build();
 
