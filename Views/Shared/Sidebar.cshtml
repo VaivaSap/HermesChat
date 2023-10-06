@@ -1,4 +1,4 @@
-﻿@page
+﻿
 @model HermesChat_TeamA.Models.SidebarModel
 @{
 
@@ -6,27 +6,61 @@
 
 <div class="participants-list-column">
     <div class="grouped-buttons">
-        <button class="chat-button btn-primary">
-            Private Chat
-        </button>
-        <button class="chat-button">
-            Group Chat
-        </button>
+
+        @*   <select id="group">
+        <option value="All">All Connected Users</option>
+        <option value="Group">Group Chat</option>
+        </select> *@
+
+        @* <button class="chat-button btn-primary">
+        Private Chat
+        </button> *@
+
+        
+
+        <div>
+            <input id="groupName" placeholder="Title of a Group Chat?" type="text" />
+        </div>
+
+
+        <div class="submit-button">
+            <input type="button" id="createGroupButton" value="Create Group Chat" />
+            <input type="button" id="joinGroupChatButton" value="Join Group Chat" />
+        </div>
+
+        @* <select id="select-group">
+        <option value="GroupChat">Group Chat</option>
+        </select> *@
+
     </div>
     <div class="total">
         <div>Connected Users: </div>
         <div><span id="usersCount" /></div>
     </div>
- 
+
     <div class="list-area">
 
-        @*  // displayed list of users who are connected
-        *@
+       
         <div class="participants-names">
-            
-             <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
 
+            <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
+            <div>
+                <ul id="onlineUsersList"></ul>
+            </div>
+        </div>
+
+        <div><span id="connectedUserId" /></div>
+
+
+        <div id="newGroupChat">
+            <div>Active Group Chats: </div>
+            <div>
+                <ul id="listOfGroupChats"></ul>
+            </div>
+            
         </div>
     </div>
+
+    
 </div>
 

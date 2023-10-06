@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HermesChat_TeamA.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA
 {
@@ -50,6 +51,7 @@ namespace HermesChat_TeamA
 			// Add services to the container.
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 			builder.Services.AddRazorPages();
+            builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>(); 
            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                // .AddCookie(option =>
                 //{
@@ -57,8 +59,11 @@ namespace HermesChat_TeamA
                  //   option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 //});
 			builder.Services.AddSignalR();
-			builder.WebHost.UseStaticWebAssets();
+            builder.WebHost.UseStaticWebAssets();
 
+            //builder.Services.AddServerSideBlazor().AddHubOptions(options => {
+            //    options.MaximumReceiveMessageSize = null; // no limit or use a number
+            //});
 
             var app = builder.Build();
 
@@ -93,6 +98,8 @@ namespace HermesChat_TeamA
 			app.MapHub<SyncHub>("/SyncHub");
 			app.MapHub<ConnectedUsersHub>("/ConnectedUsersHub");
 			app.MapRazorPages();
+	
+			
 			app.Run();
 		}
 	}

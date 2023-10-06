@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA.Hubs;
 
@@ -6,28 +7,40 @@ public class ConnectedUsersHub : Hub
 {
     public static int UsersCount { get; set; } = 0;
 
+    static HashSet<string> CurrentConnections = new HashSet<string>();
 
-    public override Task OnConnectedAsync()
+   //Context.User.Identity.Name?? 
+
+    public override async Task OnConnectedAsync()
     {
         //adding up users when they connect
         UsersCount++;
-        Clients.All.SendAsync("GetOnlineUsersCount", UsersCount).GetAwaiter().GetResult();
-        return base.OnConnectedAsync();
+        await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
+
+        var connectedUser = Context.User.Identity.Name;
+        CurrentConnections.Add(connectedUser);
+
+        await Clients.All.SendAsync("OnlineUsersList", CurrentConnections);
+
+        await base.OnConnectedAsync();
     }
 
-    public override Task OnDisconnectedAsync(Exception? exception)
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
         // a lower online users' count is seen by all when somebody disconnects
         UsersCount--;
-        Clients.All.SendAsync("GetOnlineUsersCount", UsersCount).GetAwaiter().GetResult();
-        return base.OnDisconnectedAsync(exception);
-    }
+        await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
+
+        var connectedUser = CurrentConnections.FirstOrDefault(x => x == Context.User.Identity.Name);
 
 
-    public void SendUsersCount()
-    {
-        //..that everybody online could see how many users are currently connected
-        Clients.All.SendAsync("GetOnlineUsersCount", UsersCount.ToString());
+        if (connectedUser != null)
+        {
+            CurrentConnections.Remove(connectedUser);
+        }
+        await Clients.All.SendAsync("OnlineUsersList", CurrentConnections);
+
+        await base.OnDisconnectedAsync(exception);
     }
 
     public string GetOnlineUsersConnectionId()
