@@ -38,13 +38,18 @@ public class SyncHub : Hub
     }
 
 
-    public async Task JoinGroupChat(string groupName)
+    public async Task<bool> JoinGroupChat(string groupName)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        bool isAdded = _groupsRepository.AddUserToGroupChat(groupName, Context.User.Identity.Name);
 
-        _groupsRepository.AddUserToGroupChat(groupName, Context.User.Identity.Name);
+        if (isAdded)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.User.Identity.Name} has joined the group {groupName}.");
+        }
 
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.User.Identity.Name} has joined the group {groupName}.");
+        return isAdded;
+
     }
 
     public async Task LeaveGroup(string groupName)
@@ -55,16 +60,16 @@ public class SyncHub : Hub
 
         await Clients.Group(groupName).SendAsync("ReceiveMessage", $"{Context.User.Identity.Name} has left the group {groupName}.");
 
-        if (_groupsRepository.UsersCountInGroupChat(groupName) == 0 )
+        if (_groupsRepository.UsersCountInGroupChat(groupName) == 0)
         {
             _groupsRepository.RemoveGroupFromGroupChatList(groupName);
         }
     }
 
-  //  public string DeleteGroupChat(string groupName) {}
-   
+    //  public string DeleteGroupChat(string groupName) {}
 
-        public async Task SendMessageToGroup(string groupName, string message)
+
+    public async Task SendMessageToGroup(string groupName, string message)
     {
         await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
     }

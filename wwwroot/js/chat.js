@@ -77,18 +77,33 @@ document.getElementById("createGroupButton").addEventListener("click", function 
                 document.getElementById("listOfGroupChats").appendChild(newGroupChat);
             }
 
-
-            else
-            {
+            else {
                 alert("Already exists.");
             }
         })
-    .catch(function (err) {
-        return console.error(err);
-    });
+        .catch(function (err) {
+            return console.error(err);
+        });
 })
 document.getElementById("joinGroupChatButton").addEventListener("click", function (event) {
-    connection.invoke("JoinGroupChat", groupName).catch(function (err) {
+
+    var groupName = document.getElementById("groupName").value;
+    console.log(groupName);
+
+    if (!groupName) {
+        alert("Group name cannot be empty.");
+        return;
+    }
+    document.getElementById("joinGroupChatButton").disabled = false;
+
+    connection.invoke("JoinGroupChat", groupName)
+        .then(function (event) {
+
+//čia logika
+
+
+        })
+        .catch(function (err) {
         return console.error(err.toString());
     });
 

@@ -6,7 +6,7 @@ namespace HermesChat_TeamA
     public interface IListOfGroupsRepository
     {
         public bool CreateNewGroupChat(string groupName);
-        public string AddUserToGroupChat(string groupName, string user);
+        public bool AddUserToGroupChat(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);
         public string RemoveGroupFromGroupChatList(string groupName);
@@ -33,19 +33,25 @@ namespace HermesChat_TeamA
             return false;
         }
 
-        public string AddUserToGroupChat(string groupName, string user)
+        public bool AddUserToGroupChat(string groupName, string user)
         {
             if (!groupChats.ContainsKey(groupName))
             {
                 groupChats.Add(groupName, new List<string> { user });
 
-                return "A new group successfully created.";
+                return true;
 
             }
 
-            groupChats[groupName].Add(user);
+            if (!groupChats[groupName].Contains(user))
+            {
+                groupChats[groupName].Add(user);
 
-            return "A new user successfully added.";
+                return true;
+
+            }
+
+            return false;
         }
 
         public int UsersCountInGroupChat(string groupName)
