@@ -5,7 +5,7 @@ namespace HermesChat_TeamA
 {
     public interface IListOfGroupsRepository
     {
-        public string CreateNewGroupChat(string groupName);
+        public bool CreateNewGroupChat(string groupName);
         public string AddUserToGroupChat(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);
@@ -19,7 +19,7 @@ namespace HermesChat_TeamA
 
         private readonly Dictionary<string, List<string>> groupChats = new Dictionary<string, List<string>>();
 
-        public string CreateNewGroupChat(string groupName)
+        public bool CreateNewGroupChat(string groupName)
         {
             if (!groupChats.ContainsKey(groupName))
 
@@ -27,10 +27,10 @@ namespace HermesChat_TeamA
             {
                 groupChats.Add(groupName, new List<string>());
 
-                return "A new group chat is created.";
+                return true;
             }
 
-            return "A chat with such a title already exists.";
+            return false;
         }
 
         public string AddUserToGroupChat(string groupName, string user)

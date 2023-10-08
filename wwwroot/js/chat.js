@@ -61,21 +61,32 @@ document.getElementById("createGroupButton").addEventListener("click", function 
     var groupName = document.getElementById("groupName").value;
     console.log(groupName);
 
+    if (!groupName) {
+        alert("Group name cannot be empty.");
+        return;
+    }
+
     document.getElementById("createGroupButton").disabled = false;
     connection.invoke("CreateGroupChat", groupName)
         .then(function (event) {
             console.log(event);
-            const newGroupChat = document.createElement("div");
 
-            newGroupChat.innerText = groupName;
+            if (event === true) {
+                const newGroupChat = document.createElement("div");
+                newGroupChat.innerText = groupName;
+                document.getElementById("listOfGroupChats").appendChild(newGroupChat);
+            }
 
-            document.getElementById("listOfGroupChats").appendChild(newGroupChat);
+
+            else
+            {
+                alert("Already exists.");
+            }
         })
-        .catch(function (err) {
-            return console.error(err);
-        });
+    .catch(function (err) {
+        return console.error(err);
+    });
 })
-
 document.getElementById("joinGroupChatButton").addEventListener("click", function (event) {
     connection.invoke("JoinGroupChat", groupName).catch(function (err) {
         return console.error(err.toString());

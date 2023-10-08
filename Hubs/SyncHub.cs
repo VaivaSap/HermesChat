@@ -31,12 +31,13 @@ public class SyncHub : Hub
 
     //All group-chat-related
 
-    public string CreateGroupChat(string groupName)
+    public bool CreateGroupChat(string groupName)
     {
         return _groupsRepository.CreateNewGroupChat(groupName);
-      //  return _groupsRepository.RemoveGroupFromGroupChatList(groupName);
 
     }
+
+
     public async Task JoinGroupChat(string groupName)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
