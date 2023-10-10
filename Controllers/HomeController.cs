@@ -1,4 +1,7 @@
-﻿using HermesChat_TeamA.Models;
+﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
+using HermesChat_TeamA.Hubs;
+using HermesChat_TeamA.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,12 +18,12 @@ namespace HermesChat_TeamA.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+            return View();
 		}
 
 		public IActionResult Profile()
 		{
-			return View();
+            return View();
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -23,7 +23,7 @@
     <None Include="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml" />
     <None Include="Areas\Identity\Pages\Account\ResetPassword.cshtml" />
     <None Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
-    <None Include="Areas\Identity\Pages\_ChattyLayout.cshtml" />
+    <None Include="Areas\Identity\Pages\_HermesChatLayout.cshtml" />
     <None Include="Areas\Identity\Pages\_ValidationScriptsPartial.cshtml" />
     <None Include="Areas\Identity\Pages\_ViewImports.cshtml" />
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
@@ -50,11 +50,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Owin" Version="4.2.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Areas\Identity\Pages\temp\" />
   </ItemGroup>
 
 </Project>

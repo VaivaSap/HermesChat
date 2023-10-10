@@ -53,6 +53,58 @@ namespace HermesChat_TeamA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ConnectionLog",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Connection = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConnectedUser = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConnectionLog", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupConversation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupConversation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MessageBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimeSent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConversationId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrivateConversation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrivateConversation", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -215,6 +267,18 @@ namespace HermesChat_TeamA.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ConnectionLog");
+
+            migrationBuilder.DropTable(
+                name: "GroupConversation");
+
+            migrationBuilder.DropTable(
+                name: "Message");
+
+            migrationBuilder.DropTable(
+                name: "PrivateConversation");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

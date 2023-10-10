@@ -2,6 +2,7 @@ using HermesChat_TeamA.Areas.Identity.Data;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using HermesChat_TeamA.Hubs;
+using HermesChat_TeamA.Services;
 
 namespace HermesChat_TeamA
 {
@@ -32,7 +33,7 @@ namespace HermesChat_TeamA
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
-
+			
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 

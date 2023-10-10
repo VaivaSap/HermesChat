@@ -4,6 +4,7 @@ using HermesChat_TeamA.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HermesChat_TeamA.Migrations
 {
     [DbContext(typeof(HermesChatDbContext))]
-    partial class HermesChatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231003162132_MappingConversationsAndUsers")]
+    partial class MappingConversationsAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace HermesChat_TeamA.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("ConversationUser", (string)null);
+                    b.ToTable("ConversationUser");
                 });
 
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.ConnectionLog", b =>
@@ -69,12 +72,20 @@ namespace HermesChat_TeamA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations", (string)null);
+                    b.ToTable("Conversation");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Conversation");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.Message", b =>
@@ -313,6 +324,20 @@ namespace HermesChat_TeamA.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.GroupConversation", b =>
+                {
+                    b.HasBaseType("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation");
+
+                    b.HasDiscriminator().HasValue("GroupConversation");
+                });
+
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.PrivateConversation", b =>
+                {
+                    b.HasBaseType("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation");
+
+                    b.HasDiscriminator().HasValue("PrivateConversation");
                 });
 
             modelBuilder.Entity("ConversationUser", b =>
