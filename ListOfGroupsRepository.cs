@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 
 namespace HermesChat_TeamA
@@ -6,6 +7,7 @@ namespace HermesChat_TeamA
     public interface IListOfGroupsRepository
     {
         public bool CreateNewGroupChat(string groupName);
+        public List<string> GetUsersGroupChatList(string userName); //daroma
         public bool AddUserToGroupChat(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);
@@ -33,6 +35,15 @@ namespace HermesChat_TeamA
             return false;
         }
 
+        public List<string> GetUsersGroupChatList(string userName)
+        {
+            var userGroupChats = groupChats.Where(a => a.Value.Contains(userName))
+                                       .Select(a => a.Key)
+                                       .ToList();
+
+            return userGroupChats;
+        }
+
         public bool AddUserToGroupChat(string groupName, string user)
         {
             if (!groupChats.ContainsKey(groupName))
@@ -56,7 +67,7 @@ namespace HermesChat_TeamA
 
         public int UsersCountInGroupChat(string groupName)
         {
-            if(groupChats.ContainsKey(groupName))
+            if (groupChats.ContainsKey(groupName))
             {
                 var userCountInGroup = groupChats[groupName].Count();
                 return userCountInGroup;
@@ -65,32 +76,32 @@ namespace HermesChat_TeamA
             return 0;
         }
 
-            public string RemoveUserFromGroupChat(string groupName, string user)
+        public string RemoveUserFromGroupChat(string groupName, string user)
+        {
+            if (groupChats.ContainsKey(groupName))
             {
-                if (groupChats.ContainsKey(groupName))
-                {
-                    groupChats[groupName].Remove(user);
+                groupChats[groupName].Remove(user);
 
-                    return "The user removed successfully.";
-                }
-
-                return "We did not found it.";
-
+                return "The user removed successfully.";
             }
 
-            public string RemoveGroupFromGroupChatList(string groupName)
+            return "We did not found it.";
+
+        }
+
+        public string RemoveGroupFromGroupChatList(string groupName)
+        {
+            if (groupChats.ContainsKey(groupName))
             {
-                if (groupChats.ContainsKey(groupName))
-                {
-                    groupChats.Remove(groupName);
+                groupChats.Remove(groupName);
 
-                    return "This group chat was closed.";
-                }
-
-                return "We haven't found a chat with this title. Please check it.";
+                return "This group chat was closed.";
             }
+
+            return "We haven't found a chat with this title. Please check it.";
         }
     }
+}
 
 
 

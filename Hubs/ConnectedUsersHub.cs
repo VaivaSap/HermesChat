@@ -5,15 +5,21 @@ namespace HermesChat_TeamA.Hubs;
 
 public class ConnectedUsersHub : Hub
 {
+
+    private readonly IListOfGroupsRepository _groupsRepository;
+    public ConnectedUsersHub(IListOfGroupsRepository groupsRepository)
+    {
+        _groupsRepository = groupsRepository;
+    }
     public static int UsersCount { get; set; } = 0;
 
     static HashSet<string> CurrentConnections = new HashSet<string>();
 
-   //Context.User.Identity.Name?? 
+
 
     public override async Task OnConnectedAsync()
     {
-        //adding up users when they connect
+
         UsersCount++;
         await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
 
@@ -27,7 +33,6 @@ public class ConnectedUsersHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        // a lower online users' count is seen by all when somebody disconnects
         UsersCount--;
         await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
 
@@ -41,7 +46,22 @@ public class ConnectedUsersHub : Hub
         await Clients.All.SendAsync("OnlineUsersList", CurrentConnections);
 
         await base.OnDisconnectedAsync(exception);
+
     }
+
+    public List<string> GetUsersGroupChatList()
+    {
+        var connectedUser = Context.User.Identity.Name;
+        return _groupsRepository.GetUsersGroupChatList(connectedUser);
+    }
+
+
+
+
+
+
+
+
 
     public string GetOnlineUsersConnectionId()
     {
