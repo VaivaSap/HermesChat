@@ -14,7 +14,7 @@ connectionUsersCount.on("OnlineUsersCount", (value) => {
 
 
 connectionUsersCount.on("OnlineUsersList", (value) => {
-    document.getElementById("connectedUserId").innerHTML = value;
+    document.getElementByName("connectedUserName").innerHTML = value;
 
 });
 function newWindowLoadedOnClient() {

@@ -20,7 +20,7 @@ namespace HermesChat_TeamA
 			builder.Services.AddDbContext<HermesChatDbContext>(options => options.UseSqlServer(connectionString));
 
 			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChat_TeamA.Areas.Identity.Data.HermesChatDbContext>();
-      
+         
 
             builder.Services.AddControllers();
             builder.Services.Configure<SmtpSettings>(options => builder.Configuration.GetSection("EmailConfiguration")); 

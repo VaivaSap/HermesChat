@@ -130,7 +130,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt. You should be registered.");
-                    _logger.LogWarning("LALALALLALLAL.");
+                    _logger.LogWarning("Invalid login attempt");
                     Thread.Sleep(5000);
                     //return Page();
                     return RedirectToPage("./Register");

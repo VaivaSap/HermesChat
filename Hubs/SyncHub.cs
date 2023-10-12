@@ -2,6 +2,7 @@
 using HermesChat_TeamA.Areas.Identity.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HermesChat_TeamA.Hubs;
@@ -19,9 +20,16 @@ public class SyncHub : Hub
     [Authorize]
     public async Task SendMessage(string user, string message)
     {
-        await Clients.All.SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message, DateTime.Now);
-    }
+        if (message.Length > 20)
+        {
+            await Clients.Caller.SendAsync("MessageError", "Message is too long.");
+        }
+        else
+        {
 
+            await Clients.All.SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message, DateTime.Now);
+        }
+}
 
 
     public async Task SendToParticularUser(string user, string receiverConnectionId, string message)
