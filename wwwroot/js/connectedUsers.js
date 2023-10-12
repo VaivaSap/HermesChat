@@ -27,11 +27,24 @@ connectionUsersCount.start().then(function () {
     connectionUsersCount.invoke("GetAllActiveChats").then(function (allActiveChats) {
         for (let activeChat of allActiveChats) {
             let div = document.createElement("div");
+           
             document.getElementById("listOfGroupChats").appendChild(div);
             div.textContent = `${activeChat}`;
+
+            div.classList.add("hoverEffect");
+            div.addEventListener("click", function () {
+
+                let groupName = this.textContent;
+                selectGroupChat(groupName);
+            });
         }
 
-        console.log(listOfGroupChats);
+        function selectGroupChat(groupName) {
+
+            document.getElementById("jsResultGroupName").value = groupName;
+            console.log(`Selected group chat: ${groupName}`);
+
+        }
 
     });
 
@@ -70,9 +83,10 @@ connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
         let li = document.createElement("li");
         li.textContent = userOnline;
         userListElement.appendChild(li);
-        console.log(userOnline); 
+        console.log(userOnline);
 
-        //work in progress 
+        li.classList.add("hoverEffect");
+        
         li.addEventListener("click", function () {
 
             let userName = this.textContent;
@@ -84,13 +98,12 @@ connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
 
         document.getElementById("jsResultUserName").value = userName;
         console.log(`Selected user: ${userName}`);
-       
+
     }
-    //till here
 });
 
 
- 
+
 function newWindowLoadedOnClient() {
     connectionUsersCount.send("NewWindowLoaded");
 }
