@@ -32,24 +32,24 @@ connectionUsersCount.start().then(function () {
         }
 
         console.log(listOfGroupChats);
-    
+
     });
 
-document.getElementById("sendButton").disabled = false;
-document.getElementById("sendButton").disabled = false;
+    document.getElementById("sendButton").disabled = false;
+    document.getElementById("sendButton").disabled = false;
 
-function newWindowLoadedOnClient() {
-    connectionUsersCount.send("NewWindowLoaded");
-}
+    function newWindowLoadedOnClient() {
+        connectionUsersCount.send("NewWindowLoaded");
+    }
 
-function fulfilled() {
-    console.log("Connection was successful");
-    newWindowLoadedOnClient();
-}
+    function fulfilled() {
+        console.log("Connection was successful");
+        newWindowLoadedOnClient();
+    }
 })
-    .catch (function (err) {
-    return console.error(err.toString());
-});
+    .catch(function (err) {
+        return console.error(err.toString());
+    });
 
 
 
@@ -62,10 +62,36 @@ connectionUsersCount.on("OnlineUsersCount", (value) => {
 });
 
 
-connectionUsersCount.on("OnlineUsersList", (value) => {
-    document.getElementById("connectedUserId").innerHTML = value;
+//čia
+//connectionUsersCount.on("OnlineUsersList", (value) => {
+//    document.getElementById("connectedUserId").innerHTML = value;
 
+//    for (let userOnline of connectedUserId) {
+
+//        let li = document.createElement("li");
+//        document.getElementById("connectedUserId").appendChild(li);
+//        li.textContent = `${userOnline}`;
+//    }
+
+//    console.log(userOnline);
+
+//});
+
+connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
+    const userListElement = document.getElementById("connectedUserId");
+
+    userListElement.innerHTML = "";
+
+    for (let userOnline of connectedUsers) {
+        let li = document.createElement("li");
+        li.textContent = userOnline;
+        userListElement.appendChild(li);
+        console.log(userOnline); 
+    }
 });
+
+
+ 
 function newWindowLoadedOnClient() {
     connectionUsersCount.send("NewWindowLoaded");
 }

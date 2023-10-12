@@ -46,7 +46,7 @@ namespace HermesChat_TeamA
             return userGroupChats;
         }
 
-        public List<string> GetAllActiveChats() //need only keys
+        public List<string> GetAllActiveChats() 
         {
 
             var allActiveChats = groupChats.Keys.ToList(); 
