@@ -19,7 +19,7 @@ namespace HermesChat_TeamA
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-			builder.Services.AddRazorPages();
+			builder.Services.AddRazorPages(); 
 			builder.Services.AddSignalR();
 			builder.WebHost.UseStaticWebAssets();
 

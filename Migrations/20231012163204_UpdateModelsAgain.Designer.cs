@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HermesChat_TeamA.Migrations
 {
     [DbContext(typeof(HermesChatDbContext))]
-    [Migration("20231003162132_MappingConversationsAndUsers")]
-    partial class MappingConversationsAndUsers
+    [Migration("20231012163204_UpdateModelsAgain")]
+    partial class UpdateModelsAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace HermesChat_TeamA.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ConversationUser", b =>
-                {
-                    b.Property<int>("ConversationsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ConversationsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ConversationUser");
-                });
 
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.ConnectionLog", b =>
                 {
@@ -54,12 +39,7 @@ namespace HermesChat_TeamA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ConnectionLog", (string)null);
                 });
@@ -72,20 +52,34 @@ namespace HermesChat_TeamA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversation");
+                    b.ToTable("Conversation", (string)null);
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Conversation");
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.ConversationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.UseTphMappingStrategy();
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ConversationUser", (string)null);
                 });
 
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.Message", b =>
@@ -94,11 +88,7 @@ namespace HermesChat_TeamA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConversationId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ConversationId1")
+                    b.Property<int>("ConversationId")
                         .HasColumnType("int");
 
                     b.Property<string>("MessageBody")
@@ -111,7 +101,7 @@ namespace HermesChat_TeamA.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConversationId1");
+                    b.HasIndex("ConversationId");
 
                     b.ToTable("Message", (string)null);
                 });
@@ -326,40 +316,21 @@ namespace HermesChat_TeamA.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.GroupConversation", b =>
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.ConversationUser", b =>
                 {
-                    b.HasBaseType("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation");
-
-                    b.HasDiscriminator().HasValue("GroupConversation");
-                });
-
-            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.PrivateConversation", b =>
-                {
-                    b.HasBaseType("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation");
-
-                    b.HasDiscriminator().HasValue("PrivateConversation");
-                });
-
-            modelBuilder.Entity("ConversationUser", b =>
-                {
-                    b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation", null)
-                        .WithMany()
-                        .HasForeignKey("ConversationsId")
+                    b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation", "Conversation")
+                        .WithMany("ConversationUser")
+                        .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.ConnectionLog", b =>
-                {
                     b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("ConversationUser")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
 
                     b.Navigation("User");
                 });
@@ -368,7 +339,7 @@ namespace HermesChat_TeamA.Migrations
                 {
                     b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation", "Conversation")
                         .WithMany()
-                        .HasForeignKey("ConversationId1")
+                        .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -424,6 +395,16 @@ namespace HermesChat_TeamA.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.Conversation", b =>
+                {
+                    b.Navigation("ConversationUser");
+                });
+
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.User", b =>
+                {
+                    b.Navigation("ConversationUser");
                 });
 #pragma warning restore 612, 618
         }

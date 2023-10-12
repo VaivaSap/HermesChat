@@ -14,6 +14,6 @@ public class User : IdentityUser
     [Column(TypeName = "nvarchar(100)")]
     public string LastName { get; set; }
   
-    public List<Conversation> Conversations { get; set; }
+    public List<ConversationUser> ConversationUser { get; set; } = new List<ConversationUser>();
 }
 

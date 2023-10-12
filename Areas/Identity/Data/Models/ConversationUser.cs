@@ -2,14 +2,14 @@
 
 namespace HermesChat_TeamA.Areas.Identity.Data.Models
 {
-    public class Message
+    public class ConversationUser
     {
+        public ConversationUser() { }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
-        public string MessageBody { get; set; }
-
-        public string TimeSent { get; set; }
+        public User User { get; set; }
         public Conversation Conversation { get; set; }
-        
+        public int ConversationId { get; set; }
     }
 }

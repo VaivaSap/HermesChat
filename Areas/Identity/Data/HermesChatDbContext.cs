@@ -11,19 +11,19 @@ public class HermesChatDbContext : IdentityDbContext<User>
         : base(options)
     { }
 
-
+    public DbSet<User> Users { get; set; }
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
-    //public DbSet<PrivateConversation> PrivateConversations { get; set; }
     public DbSet<ConnectionLog> ConnectionLogs { get; set; }
+    public DbSet<ConversationUser> ConversationUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Conversation>()
-            .HasMany(e => e.Users)
-            .WithMany(e => e.Conversations);
+        //builder.Entity<User>().HasMany(c => c.ConversationUser).WithOne(k => k.User);
+        //builder.Entity<ConversationUser>().HasOne(c => c.Conversation).WithMany(t => ConversationUsers);
+        builder.Entity<Conversation>().ToTable("Conversation");
+        builder.Entity<ConversationUser>().ToTable("ConversationUser");
         builder.Entity<Message>().ToTable("Message");
-        //builder.Entity<PrivateConversation>().ToTable("PrivateConversation");
         builder.Entity<ConnectionLog>().ToTable("ConnectionLog");
         base.OnModelCreating(builder);
         // Customize the ASP.NET Identity model and override the defaults if needed.
