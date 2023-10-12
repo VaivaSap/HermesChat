@@ -19,7 +19,7 @@
         
 
         <div>
-            <input id="groupName" placeholder="Title of a Group Chat?" type="text" />
+            <input id="groupName" placeholder="Title of a Group Chat?" type="text" onfocus="this.value =' '" />
         </div>
 
 
@@ -28,17 +28,13 @@
             <input type="button" id="joinGroupChatButton" value="Join Group Chat" />
         </div>
 
-        @* <select id="select-group">
-        <option value="GroupChat">Group Chat</option>
-        </select> *@
-
     </div>
     <div class="total">
         <div>Connected Users: </div>
         <div><span id="usersCount" /></div>
     </div>
 
-    <div class="list-area">
+    <div class="list-area" style="auto: 100px; overflow-y: scroll;">
 
        
         <div class="participants-names">
@@ -53,7 +49,7 @@
 
 
         <div id="newGroupChat">
-            <div>Your Group Chats </div>
+            <div>Group Chats </div>
             <div>
                 <ul id="listOfGroupChats"></ul>
             </div>
