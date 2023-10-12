@@ -7,7 +7,9 @@ namespace HermesChat_TeamA
     public interface IListOfGroupsRepository
     {
         public bool CreateNewGroupChat(string groupName);
-        public List<string> GetUsersGroupChatList(string userName); //daroma
+        public List<string> GetUsersGroupChatList(string userName); 
+
+        public List<string> GetAllActiveChats(); //in progress
         public bool AddUserToGroupChat(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);
@@ -42,6 +44,13 @@ namespace HermesChat_TeamA
                                        .ToList();
 
             return userGroupChats;
+        }
+
+        public List<string> GetAllActiveChats() //need only keys
+        {
+
+            var allActiveChats = groupChats.Keys.ToList(); 
+            return allActiveChats;
         }
 
         public bool AddUserToGroupChat(string groupName, string user)

@@ -56,7 +56,10 @@ public class ConnectedUsersHub : Hub
     }
 
 
-
+    public List<string> GetAllActiveChats()
+    {
+        return _groupsRepository.GetAllActiveChats();
+    }
 
 
 

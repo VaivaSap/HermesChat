@@ -24,21 +24,32 @@ connectionUsersCount.start().then(function () {
 
     });
 
-    document.getElementById("sendButton").disabled = false;
-    document.getElementById("sendButton").disabled = false;
+    connectionUsersCount.invoke("GetAllActiveChats").then(function (allActiveChats) {
+        for (let activeChat of allActiveChats) {
+            let div = document.createElement("div");
+            document.getElementById("listOfGroupChats").appendChild(div);
+            div.textContent = `${activeChat}`;
+        }
 
-    function newWindowLoadedOnClient() {
-        connectionUsersCount.send("NewWindowLoaded");
-    }
-
-    function fulfilled() {
-        console.log("Connection was successful");
-        newWindowLoadedOnClient();
-    }
-})
-    .catch(function (err) {
-        return console.error(err.toString());
+        console.log(listOfGroupChats);
+    
     });
+
+document.getElementById("sendButton").disabled = false;
+document.getElementById("sendButton").disabled = false;
+
+function newWindowLoadedOnClient() {
+    connectionUsersCount.send("NewWindowLoaded");
+}
+
+function fulfilled() {
+    console.log("Connection was successful");
+    newWindowLoadedOnClient();
+}
+})
+    .catch (function (err) {
+    return console.error(err.toString());
+});
 
 
 
