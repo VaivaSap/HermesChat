@@ -29,9 +29,6 @@ connection.start().then(function () {
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var message = document.getElementById("messageInput").value;
-    //var groupElement = document.getElementById("group");
-    //var groupValue = groupElement.options[groupElement.selectedIndex].value;
-    //var method = "SendMessage";
     console.log(connection);
 
     connection.invoke("SendMessage", user, message).catch(function (err) {

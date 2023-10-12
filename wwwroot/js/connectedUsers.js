@@ -53,8 +53,6 @@ connectionUsersCount.start().then(function () {
 
 
 
-
-
 connectionUsersCount.on("OnlineUsersCount", (value) => {
     console.log("successful", value);
     var newCountSpan = document.getElementById("usersCount");
@@ -62,20 +60,6 @@ connectionUsersCount.on("OnlineUsersCount", (value) => {
 });
 
 
-//čia
-//connectionUsersCount.on("OnlineUsersList", (value) => {
-//    document.getElementById("connectedUserId").innerHTML = value;
-
-//    for (let userOnline of connectedUserId) {
-
-//        let li = document.createElement("li");
-//        document.getElementById("connectedUserId").appendChild(li);
-//        li.textContent = `${userOnline}`;
-//    }
-
-//    console.log(userOnline);
-
-//});
 
 connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
     const userListElement = document.getElementById("connectedUserId");
@@ -87,7 +71,22 @@ connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
         li.textContent = userOnline;
         userListElement.appendChild(li);
         console.log(userOnline); 
+
+        //work in progress 
+        li.addEventListener("click", function () {
+
+            let userName = this.textContent;
+            selectUserToChat(userName);
+        });
     }
+
+    function selectUserToChat(userName) {
+
+        document.getElementById("jsResultUserName").value = userName;
+        console.log(`Selected user: ${userName}`);
+       
+    }
+    //till here
 });
 
 
