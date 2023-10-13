@@ -4,6 +4,7 @@ using HermesChat_TeamA.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HermesChat_TeamA.Migrations
 {
     [DbContext(typeof(HermesChatDbContext))]
-    partial class HermesChatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231012163204_UpdateModelsAgain")]
+    partial class UpdateModelsAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,6 +70,7 @@ namespace HermesChat_TeamA.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -322,7 +326,9 @@ namespace HermesChat_TeamA.Migrations
 
                     b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.User", "User")
                         .WithMany("ConversationUser")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Conversation");
 
