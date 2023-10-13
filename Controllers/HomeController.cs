@@ -1,13 +1,10 @@
-﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
-using HermesChat_TeamA.Hubs;
-using HermesChat_TeamA.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using HermesChat_TeamA.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HermesChat_TeamA.Controllers
 {
-	public class HomeController : Controller
+    public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
 
