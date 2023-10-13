@@ -9,7 +9,7 @@ namespace HermesChat_TeamA
         public bool CreateNewGroupChat(string groupName);
         public List<string> GetUsersGroupChatList(string userName); 
 
-        public List<string> GetAllActiveChats(); //in progress
+        public List<string> GetAllActiveChats(); 
         public bool AddUserToGroupChat(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);

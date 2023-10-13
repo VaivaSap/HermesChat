@@ -1,4 +1,5 @@
 ﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HermesChat_TeamA.Hubs;
@@ -11,10 +12,11 @@ public class ConnectedUsersHub : Hub
     {
         _groupsRepository = groupsRepository;
     }
+
+  
     public static int UsersCount { get; set; } = 0;
 
     static HashSet<string> CurrentConnections = new HashSet<string>();
-
 
 
     public override async Task OnConnectedAsync()

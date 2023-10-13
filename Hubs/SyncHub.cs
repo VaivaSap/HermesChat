@@ -23,17 +23,18 @@ public class SyncHub : Hub
     }
 
 
-
+ 
     public async Task SendToParticularUser(string user, string receiverConnectionId, string message)
     {
         await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
     }
 
     //work in progress
-    public async Task SendMessageToGroup(string groupName, string message)
+    
+    public async Task SendMessageToGroup(string user, string groupName, string message)
     {
      
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
+        await Clients.Group(groupName).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
        
     }
     //
