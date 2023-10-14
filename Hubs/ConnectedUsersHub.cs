@@ -21,6 +21,7 @@ public class ConnectedUsersHub : Hub
 
     public override async Task OnConnectedAsync()
     {
+        await base.OnConnectedAsync();
 
         UsersCount++;
         await Clients.All.SendAsync("OnlineUsersCount", UsersCount);
@@ -29,8 +30,17 @@ public class ConnectedUsersHub : Hub
         CurrentConnections.Add(connectedUser);
 
         await Clients.All.SendAsync("OnlineUsersList", CurrentConnections);
+        await Clients.Caller.SendAsync("UserConnected", connectedUser);
 
-        await base.OnConnectedAsync();
+        
+    }
+
+    public async Task<bool> AddClickerToGroup(string groupName, string user)
+    {
+
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        return _groupsRepository.AddClickerToGroup(groupName, user);
+
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)

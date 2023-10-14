@@ -42,6 +42,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
 document.getElementById("sendToParticularUser").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
+    
     //var receiver = document.getElementById("jsResultUserName").value;
     var receiverConnectionId = document.getElementById("receiverId").value;
     var message = document.getElementById("messageInput").value;
@@ -96,14 +97,15 @@ document.getElementById("joinGroupChatButton").addEventListener("click", functio
 
     connection.invoke("JoinGroupChat", groupName)
         .catch(function (err) {
-        return console.error(err.toString());
-    });
+            return console.error(err.toString());
+        });
 
     event.preventDefault();
 
 });
 
-    ///čia grupės chat siuntimo logika JS
+
+///čia grupės chat siuntimo logika JS
 document.getElementById("SendMessageToGroup").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var groupName = document.getElementById("jsResultGroupName").value;
@@ -111,8 +113,8 @@ document.getElementById("SendMessageToGroup").addEventListener("click", function
     console.log("SendMessageToGroup", user, groupName, message);
 
     connection.invoke("SendMessageToGroup", user, groupName, message).catch(function (err) {
-            return console.error(err.toString());
-        });
+        return console.error(err.toString());
+    });
 
     event.preventDefault();
 

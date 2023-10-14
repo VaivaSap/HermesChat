@@ -15,8 +15,13 @@ public class SyncHub : Hub
     {
         _groupsRepository = groupsRepository;
     }
+    public override async Task OnConnectedAsync()
+    {
+        //
+       // await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+    }
 
-    [Authorize]
+     [Authorize]
     public async Task SendMessage(string user, string message)
     {
         await Clients.All.SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message, DateTime.Now);
@@ -29,7 +34,6 @@ public class SyncHub : Hub
         await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
     }
 
-    //work in progress
     
     public async Task SendMessageToGroup(string user, string groupName, string message)
     {
@@ -37,7 +41,7 @@ public class SyncHub : Hub
         await Clients.Group(groupName).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
        
     }
-    //
+
    
     public bool CreateGroupChat(string groupName)
     {
@@ -45,6 +49,7 @@ public class SyncHub : Hub
 
     }
 
+   
 
     public async Task<bool> JoinGroupChat(string groupName)
     {

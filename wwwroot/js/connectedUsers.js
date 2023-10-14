@@ -4,30 +4,55 @@
 var connectionUsersCount = new signalR.HubConnectionBuilder().withUrl("/ConnectedUsersHub").build();
 
 //document.getElementById("sendButton").disabled = true;
+connectionUsersCount.on("UserConnected", (user) => {
+    document.getElementById("userInput").value = user;
 
+});
 
 connectionUsersCount.start().then(function () {
     connectionUsersCount.invoke("GetOnlineUsersConnectionId").then(function (usersOnlineConnectionId) {
         document.getElementById("usersOnlineConnectionId").innerHTML = usersOnlineConnectionId;
     });
 
+
+    //?
+
+
     connectionUsersCount.invoke("GetUsersGroupChatList").then(function (usersGroupChats) {
+
 
         for (let chat of usersGroupChats) {
 
             let div = document.createElement("div");
+            div.textContent = chat;
+            div.addEventListener("click", function (event) {
+                let groupName = this.textContent;
+                selectGroupChat(groupName);
+
+
+                let user = document.getElementById("userInput").value;;
+
+
+                connectionUsersCount.invoke("AddClickerToGroup", groupName, user).catch(function (err) {
+                    return console.error(err.toString());
+                });
+
+                console.log("AddClickerToGroup", user, groupName);
+
+                event.preventDefault();
+            });
             document.getElementById("listOfGroupChats").appendChild(div);
             div.textContent = `${chat}`;
-        }
 
-        console.log(listOfGroupChats);
-
+            console.log(listOfGroupChats);
+        };
     });
 
     connectionUsersCount.invoke("GetAllActiveChats").then(function (allActiveChats) {
         for (let activeChat of allActiveChats) {
             let div = document.createElement("div");
-           
+            div.textContent = activeChat;
+
             document.getElementById("listOfGroupChats").appendChild(div);
             div.textContent = `${activeChat}`;
 
@@ -39,12 +64,7 @@ connectionUsersCount.start().then(function () {
             });
         }
 
-        function selectGroupChat(groupName) {
 
-            document.getElementById("jsResultGroupName").value = groupName;
-            console.log(`Selected group chat: ${groupName}`);
-
-        }
 
     });
 
@@ -64,10 +84,15 @@ connectionUsersCount.start().then(function () {
         return console.error(err.toString());
     });
 
+function selectGroupChat(groupName) {
 
+    document.getElementById("jsResultGroupName").value = groupName;
+    console.log(`Selected group chat: ${groupName}`);
+
+}
 
 connectionUsersCount.on("OnlineUsersCount", (value) => {
-    console.log("successful", value);
+
     var newCountSpan = document.getElementById("usersCount");
     newCountSpan.innerText = value.toString();
 });
@@ -86,7 +111,7 @@ connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
         console.log(userOnline);
 
         li.classList.add("hoverEffect");
-        
+
         li.addEventListener("click", function () {
 
             let userName = this.textContent;
