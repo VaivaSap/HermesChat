@@ -17,8 +17,15 @@ public class SyncHub : Hub
     }
     public override async Task OnConnectedAsync()
     {
-        //
-       // await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        var userName = Context.User.Identity.Name;
+        var usersGroups = _groupsRepository.GetUsersGroupChatList(userName);
+
+        foreach (var groupName in usersGroups)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        await base.OnConnectedAsync();
     }
 
      [Authorize]
