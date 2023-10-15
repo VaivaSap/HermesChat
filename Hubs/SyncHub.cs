@@ -45,7 +45,7 @@ public class SyncHub : Hub
     public async Task SendMessageToGroup(string user, string groupName, string message)
     {
      
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
+        await Clients.Group(groupName).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message, groupName);
        
     }
 

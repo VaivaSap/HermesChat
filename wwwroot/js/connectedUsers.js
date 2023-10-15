@@ -24,10 +24,12 @@ connectionUsersCount.start().then(function () {
         for (let chat of usersGroupChats) {
 
             let div = document.createElement("div");
+            
             div.textContent = chat;
             div.addEventListener("click", function (event) {
                 let groupName = this.textContent;
                 selectGroupChat(groupName);
+                groupName.classList.add("activeChatBold"); //kodėl neveikia?
 
 
                 let user = document.getElementById("userInput").value;;
@@ -43,6 +45,8 @@ connectionUsersCount.start().then(function () {
             });
             document.getElementById("listOfGroupChats").appendChild(div);
             div.textContent = `${chat}`;
+
+            
 
             console.log(listOfGroupChats);
         };

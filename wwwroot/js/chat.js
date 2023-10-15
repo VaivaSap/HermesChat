@@ -4,14 +4,17 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/SyncHub").build();
 
 document.getElementById("sendButton").disabled = true;
 
-
-/*adding an event handler to spark action when smth new happens*/
-
-connection.on("ReceiveMessage", function (user, message, sentAt) {
+connection.on("ReceiveMessage", function (user, message, sentAt, groupName) {
     console.log("ReceiveMessage", user, message);
     var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
-    li.textContent = `${user}: ${message}`;
+
+    var groupNameActive = document.getElementById("jsResultGroupName").value; // aktyvią žinau pagal tai, kas paspausta
+
+    if (!groupName || groupNameActive === groupName) {
+        document.getElementById("messagesList").appendChild(li);
+        li.textContent = `${user}: ${message}`;
+    }
+
 });
 
 
@@ -42,7 +45,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
 document.getElementById("sendToParticularUser").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
-    
+
     //var receiver = document.getElementById("jsResultUserName").value;
     var receiverConnectionId = document.getElementById("receiverId").value;
     var message = document.getElementById("messageInput").value;
@@ -104,8 +107,6 @@ document.getElementById("joinGroupChatButton").addEventListener("click", functio
 
 });
 
-
-///čia grupės chat siuntimo logika JS
 document.getElementById("SendMessageToGroup").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
     var groupName = document.getElementById("jsResultGroupName").value;
