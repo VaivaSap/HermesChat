@@ -1,10 +1,12 @@
-﻿using HermesChat_TeamA.Areas.Identity.Data;
+﻿using EO.WebBrowser.DOM;
+using HermesChat_TeamA.Areas.Identity.Data;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
 using HermesChat_TeamA.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.IdentityModel.Tokens;
+using System.Windows;
 
 namespace HermesChat_TeamA.Hubs;
 
@@ -27,7 +29,7 @@ public class SyncHub : Hub
     {
         if (message.Length > 20)
         {
-            await Clients.Caller.SendAsync("MessageError", "Message is too long.");
+          
         }
         else
         {
@@ -36,6 +38,10 @@ public class SyncHub : Hub
         }
 }
 
+    private void alert(string v)
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task SendToParticularUser(string user, string receiverConnectionId, string message)
     {

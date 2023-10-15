@@ -17,16 +17,6 @@ namespace HermesChat_TeamA.Controllers
 			_emailSender = emailSender;
 		}
 
-		/*public async Task<IActionResult> Index()
-		{ 
-			var receiver = "jurgita.pupalaigiene@gmail.com";
-			var subject = "agsahgahgdfhahdfajfjajfghasgfagfajfasgh";
-			var message = "Hellooooo";
-
-			await _emailSender.SendEmailAsync(receiver, subject, message);
-
-			return View();
-		}*/
 		
 		
 	public IActionResult Index()
