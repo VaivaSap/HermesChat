@@ -1,5 +1,6 @@
 ﻿using HermesChat_TeamA.Areas.Identity.Data;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
+using HermesChat_TeamA.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,10 +12,14 @@ public class SyncHub : Hub
 {
 
     private readonly IListOfGroupsRepository _groupsRepository;
-
-    public SyncHub(IListOfGroupsRepository groupsRepository)
+    private readonly HermesChatDbContext _context;
+    private readonly DataAccessService _dataAccessService;
+    public SyncHub(IListOfGroupsRepository groupsRepository, HermesChatDbContext context)
     {
         _groupsRepository = groupsRepository;
+        _context = context;
+        _dataAccessService = new DataAccessService(_context);
+
     }
 
     [Authorize]
@@ -35,6 +40,8 @@ public class SyncHub : Hub
     public async Task SendToParticularUser(string user, string receiverConnectionId, string message)
     {
         await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
+        _dataAccessService.CreateMessage(receiverConnectionId, message, Context.User.Identity.Name);
+
     }
 
     //All group-chat-related
@@ -82,7 +89,16 @@ public class SyncHub : Hub
         await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
     }
 
-    public string GetConnectionId() => Context.ConnectionId;
+    public string GetConnectionId()
+    {
+        if (Context.User.Identity.Name != null && Context.ConnectionId != null)
+        {
+            _dataAccessService.CheckIfExistAndCreateConnectionLog(Context.ConnectionId, Context.User.Identity.Name);
+
+        }
+        return Context.ConnectionId;
+
+    }
 
 }
 

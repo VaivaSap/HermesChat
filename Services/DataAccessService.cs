@@ -73,6 +73,20 @@ namespace HermesChat_TeamA.Services
             return conversation;
         }
 
+        public List<Message> ReturnTopMessagesFromUsers(string senderUserName, string receiverConnectionId, int number) 
+        {
+            var CurrentReceiver = _context.Users.FirstOrDefault
+            (u => u.Id == _context.ConnectionLogs.FirstOrDefault
+            (u => u.Connection == receiverConnectionId).ConnectedUserId);
+            var CurrentSender = _context.Users.FirstOrDefault(u => u.UserName == senderUserName);
+
+            var conversation = ReturnConversationOfUsers(CurrentReceiver, CurrentSender);
+            
+            var result = _context.Messages.FromSql($"SELECT TOP ({number}) * FROM [HermesChatDB].[dbo].[Message] WHERE [ConversationId] = {conversation.Id}").ToList();
+            
+            return result;
+        }
+
         public void CheckIfExistAndCreateConnectionLog(string connectionId, string currentUserName)
         {
             var connectionLog = _context.ConnectionLogs.FirstOrDefault(i => i.Connection == connectionId);
