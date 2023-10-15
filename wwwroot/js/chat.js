@@ -87,6 +87,10 @@ document.getElementById("createGroupButton").addEventListener("click", function 
             return console.error(err);
         });
 });
+
+
+
+var joinedGroups = [];
 document.getElementById("joinGroupChatButton").addEventListener("click", function (event) {
 
     var groupName = document.getElementById("groupName").value;
@@ -96,6 +100,15 @@ document.getElementById("joinGroupChatButton").addEventListener("click", functio
         alert("Group name cannot be empty.");
         return;
     }
+
+    if (joinedGroups.includes(groupName)) {
+        alert("You've already joined this group.");
+        return;
+    }
+
+    joinedGroups.push(groupName);
+
+
     document.getElementById("joinGroupChatButton").disabled = false;
 
     connection.invoke("JoinGroupChat", groupName)
@@ -112,7 +125,6 @@ document.getElementById("SendMessageToGroup").addEventListener("click", function
     var groupName = document.getElementById("jsResultGroupName").value;
     var message = document.getElementById("messageInput").value;
     console.log("SendMessageToGroup", user, groupName, message);
-
     connection.invoke("SendMessageToGroup", user, groupName, message).catch(function (err) {
         return console.error(err.toString());
     });

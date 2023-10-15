@@ -26,11 +26,9 @@ namespace HermesChat_TeamA
 
         public bool CreateNewGroupChat(string groupName)
         {
-            if (!groupChats.ContainsKey(groupName))
-
-
+            if (!groupChats.ContainsKey(groupName.Trim()))
             {
-                groupChats.Add(groupName, new List<string>());
+                groupChats.Add(groupName.Trim(), new List<string>());
 
                 return true;
             }

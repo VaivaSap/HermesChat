@@ -29,8 +29,16 @@ connectionUsersCount.start().then(function () {
             div.addEventListener("click", function (event) {
                 let groupName = this.textContent;
                 selectGroupChat(groupName);
-                groupName.classList.add("activeChatBold"); //kodėl neveikia?
 
+                const groups = document.querySelectorAll(".activeChatBold");
+
+                groups.forEach(group => {
+
+                    group.classList.remove("activeChatBold");
+
+                });
+
+                event.target.classList.add("activeChatBold"); 
 
                 let user = document.getElementById("userInput").value;;
 
@@ -61,7 +69,16 @@ connectionUsersCount.start().then(function () {
             div.textContent = `${activeChat}`;
 
             div.classList.add("hoverEffect");
-            div.addEventListener("click", function () {
+            div.addEventListener("click", function (event) {
+
+                //const groups = document.querySelectorAll(".activeChatBold");
+
+                //groups.forEach(group => {
+                    
+                //    group.classList.remove("activeChatBold");
+
+                //});
+                //event.target.classList.add("activeChatBold"); 
 
                 let groupName = this.textContent;
                 selectGroupChat(groupName);
