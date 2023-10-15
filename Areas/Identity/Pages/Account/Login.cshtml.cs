@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using HermesChat_TeamA.Areas.Identity.Data.Models;
+using HermesChat_TeamA.Areas.Identity.Data;
+using Microsoft.AspNetCore.SignalR;
+using HermesChat_TeamA.Hubs;
 
 namespace HermesChat_TeamA.Areas.Identity.Pages.Account
 {
@@ -22,11 +25,13 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly HermesChatDbContext _context;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, HermesChatDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -116,6 +121,10 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    //var id = User.Identity.Name;
+                    //var id = _context.Users.FirstOrDefault(n => n.UserName == User.Identity.Name).Id;
+                    //var connectionId = SyncHub.GetConnectionId();
+                    //var connectionLogRecord = new ConnectionLog { Connection = ; ConnectedUser =  };
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -130,7 +139,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt. You should be registered.");
-                    _logger.LogWarning("LALALALLALLAL.");
+                    _logger.LogWarning("Invalid login attempt");
                     Thread.Sleep(5000);
                     //return Page();
                     return RedirectToPage("./Register");

@@ -193,19 +193,7 @@ namespace HermesChat_TeamA.Areas.Identity.Pages.Account
             catch (Exception)
             { return false; }
         }
-            /*private User CreateUser()
-            {
-                try
-                {
-                    return Activator.CreateInstance<User>();
-                }
-                catch
-                {
-                    throw new InvalidOperationException($"Can't create an instance of '{nameof(Data.User)}'. " +
-                        $"Ensure that '{nameof(Data.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                        $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-                }
-            }*/
+            
         private User CreateUser()
         {
             try
