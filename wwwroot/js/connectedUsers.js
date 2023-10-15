@@ -16,8 +16,6 @@ connectionUsersCount.start().then(function () {
 
 
 
-
-
     connectionUsersCount.invoke("GetUsersGroupChatList").then(function (usersGroupChats) {
 
 

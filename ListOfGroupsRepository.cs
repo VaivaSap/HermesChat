@@ -54,6 +54,7 @@ namespace HermesChat_TeamA
 
         public bool AddUserToGroupChat(string groupName, string user)
         {
+            groupName = groupName.Trim();
             if (!groupChats.ContainsKey(groupName))
             {
                 groupChats.Add(groupName, new List<string> { user });
@@ -75,7 +76,9 @@ namespace HermesChat_TeamA
 
         public bool AddClickerToGroup(string groupName, string user)
         {
+            groupName = groupName.Trim();
             if (!groupChats[groupName].Contains(user))
+
             {
                 groupChats.Add(groupName, new List<string> { user });
 
