@@ -1,73 +1,87 @@
-﻿
-@model HermesChat_TeamA.Models.SidebarModel
+﻿@model HermesChat_TeamA.Models.SidebarModel
 @{
 
 }
 
-<div class="participants-list-column">
-    <div class="grouped-buttons">
-
-        @*   <select id="group">
-        <option value="All">All Connected Users</option>
-        <option value="Group">Group Chat</option>
-        </select> *@
-
-        @* <button class="chat-button btn-primary">
-        Private Chat
-        </button> *@
-
-        
-
-        <div>
-            <input id="groupName" placeholder="Title of a Group Chat?" type="text" onfocus="this.value =' '" />
-        </div>
+@using HermesChat_TeamA.Areas.Identity.Data.Models;
+@using Microsoft.AspNetCore.Identity;
 
 
-        <div class="submit-button">
-            <input type="button" id="createGroupButton" value="Create Group Chat" />
-            <input type="button" id="joinGroupChatButton" value="Join Group Chat" />
-        </div>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
-    </div>
-    <div class="total">
-        <div>Connected Users: </div>
-        <div><span id="usersCount" /></div>
-    </div>
+    <div>
 
-    <div class="list-area" style="auto: 100px; overflow-y: scroll;">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="participants-list-column">
+            <div class="grouped-buttons">
 
-       
-        <div class="participants-names">
+                @*   <select id="group">
+            <option value="All">All Connected Users</option>
+            <option value="Group">Group Chat</option>
+            </select> *@
 
-            <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
-
-
-            <ul>
-                @* <li id="onlineUsersList"></li> *@
-                <li><span id="connectedUserId" /></li>
-            </ul>
-            
-        </div>
-
-        
+                @* <button class="chat-button btn-primary">
+            Private Chat
+            </button> *@
 
 
-        <div id="newGroupChat">
-            <div>Group Chats </div>
-            <div>
-                <ul id="listOfGroupChats"></ul>
+
+                <div>
+                    <input id="groupName" placeholder="Title of a Group Chat?" type="text" onfocus="this.value =' '" />
+                </div>
+
+
+                <div class="submit-button">
+                    <input type="button" id="createGroupButton" value="Create Group Chat" />
+                    <input type="button" id="joinGroupChatButton" value="Join Group Chat" />
+                </div>
+
             </div>
-            
+            <div class="total">
+                <div>Connected Users: </div>
+                <div><span id="usersCount" /></div>
+            </div>
+
+            <div class="list-area" style="auto: 100px; overflow-y: scroll;">
+
+
+                <div class="participants-names">
+
+                    <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
+
+
+                    <ul>
+                        @* <li id="onlineUsersList"></li> *@
+                        <li><span id="connectedUserId" /></li>
+                    </ul>
+
+                </div>
+
+
+
+
+                <div id="newGroupChat">
+                    <div>Group Chats </div>
+                    <div>
+                        <ul id="listOfGroupChats"></ul>
+                    </div>
+
+                </div>
+
+
+                <div>
+                </div>
+            </div>
+
+
         </div>
+    }
 
+    else
+    {
+      
+    }
 
-
-
-        <div>
-
-        </div>
-    </div>
-
-    
 </div>
-
