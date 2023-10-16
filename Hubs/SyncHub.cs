@@ -23,8 +23,20 @@ public class SyncHub : Hub
         _dataAccessService = new DataAccessService(_context);
 
     }
+    public override async Task OnConnectedAsync()
+    {
+        var userName = Context.User.Identity.Name;
+        var usersGroups = _groupsRepository.GetUsersGroupChatList(userName);
 
-    [Authorize]
+        foreach (var groupName in usersGroups)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        await base.OnConnectedAsync();
+    }
+
+     [Authorize]
     public async Task SendMessage(string user, string message)
     {
         if (message.Length > 20)
@@ -38,11 +50,8 @@ public class SyncHub : Hub
         }
 }
 
-    private void alert(string v)
-    {
-        throw new NotImplementedException();
-    }
 
+ 
     public async Task SendToParticularUser(string user, string receiverConnectionId, string message)
     {
         await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message);
@@ -50,14 +59,22 @@ public class SyncHub : Hub
 
     }
 
-    //All group-chat-related
+    
+    public async Task SendMessageToGroup(string user, string groupName, string message)
+    {
+     
+        await Clients.Group(groupName).SendAsync("ReceiveMessage", Context.User.Identity.Name ?? "anonymous", message, groupName);
+       
+    }
 
+   
     public bool CreateGroupChat(string groupName)
     {
         return _groupsRepository.CreateNewGroupChat(groupName);
 
     }
 
+   
 
     public async Task<bool> JoinGroupChat(string groupName)
     {
@@ -90,10 +107,7 @@ public class SyncHub : Hub
     //  public string DeleteGroupChat(string groupName) {}
 
 
-    public async Task SendMessageToGroup(string groupName, string message)
-    {
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
-    }
+ 
 
     public string GetConnectionId()
     {

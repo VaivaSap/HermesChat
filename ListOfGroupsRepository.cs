@@ -7,10 +7,11 @@ namespace HermesChat_TeamA
     public interface IListOfGroupsRepository
     {
         public bool CreateNewGroupChat(string groupName);
-        public List<string> GetUsersGroupChatList(string userName); 
+        public List<string> GetUsersGroupChatList(string userName);
 
-        public List<string> GetAllActiveChats(); //in progress
+        public List<string> GetAllActiveChats();
         public bool AddUserToGroupChat(string groupName, string user);
+        public bool AddClickerToGroup(string groupName, string user);
         public int UsersCountInGroupChat(string groupName);
         public string RemoveUserFromGroupChat(string groupName, string user);
         public string RemoveGroupFromGroupChatList(string groupName);
@@ -25,11 +26,9 @@ namespace HermesChat_TeamA
 
         public bool CreateNewGroupChat(string groupName)
         {
-            if (!groupChats.ContainsKey(groupName))
-
-
+            if (!groupChats.ContainsKey(groupName.Trim()))
             {
-                groupChats.Add(groupName, new List<string>());
+                groupChats.Add(groupName.Trim(), new List<string>());
 
                 return true;
             }
@@ -46,15 +45,16 @@ namespace HermesChat_TeamA
             return userGroupChats;
         }
 
-        public List<string> GetAllActiveChats() 
+        public List<string> GetAllActiveChats()
         {
 
-            var allActiveChats = groupChats.Keys.ToList(); 
+            var allActiveChats = groupChats.Keys.ToList();
             return allActiveChats;
         }
 
         public bool AddUserToGroupChat(string groupName, string user)
         {
+            groupName = groupName.Trim();
             if (!groupChats.ContainsKey(groupName))
             {
                 groupChats.Add(groupName, new List<string> { user });
@@ -74,43 +74,57 @@ namespace HermesChat_TeamA
             return false;
         }
 
-        public int UsersCountInGroupChat(string groupName)
+        public bool AddClickerToGroup(string groupName, string user)
         {
-            if (groupChats.ContainsKey(groupName))
+            groupName = groupName.Trim();
+            if (!groupChats[groupName].Contains(user))
+
             {
-                var userCountInGroup = groupChats[groupName].Count();
-                return userCountInGroup;
+                groupChats.Add(groupName, new List<string> { user });
+
+                return true;
             }
 
-            return 0;
+            return false;
         }
 
-        public string RemoveUserFromGroupChat(string groupName, string user)
-        {
-            if (groupChats.ContainsKey(groupName))
+            public int UsersCountInGroupChat(string groupName)
             {
-                groupChats[groupName].Remove(user);
+                if (groupChats.ContainsKey(groupName))
+                {
+                    var userCountInGroup = groupChats[groupName].Count();
+                    return userCountInGroup;
+                }
 
-                return "The user removed successfully.";
+                return 0;
             }
 
-            return "We did not found it.";
-
-        }
-
-        public string RemoveGroupFromGroupChatList(string groupName)
-        {
-            if (groupChats.ContainsKey(groupName))
+            public string RemoveUserFromGroupChat(string groupName, string user)
             {
-                groupChats.Remove(groupName);
+                if (groupChats.ContainsKey(groupName))
+                {
+                    groupChats[groupName].Remove(user);
 
-                return "This group chat was closed.";
+                    return "The user removed successfully.";
+                }
+
+                return "We did not found it.";
+
             }
 
-            return "We haven't found a chat with this title. Please check it.";
+            public string RemoveGroupFromGroupChatList(string groupName)
+            {
+                if (groupChats.ContainsKey(groupName))
+                {
+                    groupChats.Remove(groupName);
+
+                    return "This group chat was closed.";
+                }
+
+                return "We haven't found a chat with this title. Please check it.";
+            }
         }
     }
-}
 
 
 
