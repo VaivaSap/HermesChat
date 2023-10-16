@@ -34,6 +34,10 @@ body {
     height: 60px;
 }
 
+.hoverEffect:hover {
+    color: #89023e;
+    cursor: pointer;
+}
 .participants-list-column {
     display: flex;
     flex-direction: column;
@@ -80,6 +84,10 @@ body {
     padding-top: 5px;
 }
 
+.activeChatBold {
+    font-weight: 800;
+}
+
 .list-area {
     display: flex;
     flex-direction: column;
@@ -111,25 +119,11 @@ body {
     width: 100%;
 }
 
-.first-user {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    font-size: 14px;
-}
 
 .name-input {
     display: none;
 }
 
-.second-user {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    font-size: 14px;
-}
 
 .writing-area-for-messages {
     display: flex;
