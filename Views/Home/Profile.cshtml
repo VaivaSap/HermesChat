@@ -11,10 +11,18 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<div class="profile-main">
-    <div class="avatar" style="background-image: url('/Images/jinx.png')" alt="User's Avatar"></div>
 
-    
+<div class="profile-main">
+   <div class="avatar">
+   <img src="~/Images/jinx.png" id="profile-picture"/>
+   <label for="input-file" class="update-button">Update image</label>
+    <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file"/>
+    </div>
+
+
+
+
+
     <div class="info-box">
         <ul>
             <li>Name: @UserManager.GetUserName(User)!</li>
@@ -22,5 +30,14 @@
             <li class="status">Status: Passionate about tech</li>
         </ul>
     </div>
-    
+
 </div>
+    <script>
+
+    let profilePicture = document.getElementById("profile-picture");
+    let inputFile = document.getElementById("input-file");
+
+        inputFile.onchange = function () {
+            profilePicture.src = URL.createObjectURL(inputFile.files[0])
+        }
+    </script>
