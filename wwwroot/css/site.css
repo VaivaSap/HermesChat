@@ -185,10 +185,9 @@ body {
 
 .avatar {
     display: flex;
-    width: 30%;
+    flex-direction: column;
+    width: 400px;
     height: auto;
-    background-size: contain;
-    background-repeat: no-repeat;
     margin-top: 30px;
     margin-left: 30px;
 }
@@ -196,4 +195,21 @@ body {
 .status {
     color: #89023e;
     font-weight: 600;
+}
+
+.update-button {
+    display: block;
+    text-align:center;
+    width: 200px;
+    height:30px;
+    background: #89023e;
+    color: #cfdbd5;
+    padding: 12px;
+    margin: 10px auto;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#input-file{
+    display: none;
 }
