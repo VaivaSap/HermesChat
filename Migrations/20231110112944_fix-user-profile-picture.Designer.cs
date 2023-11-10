@@ -4,6 +4,7 @@ using HermesChat_TeamA.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HermesChat_TeamA.Migrations
 {
     [DbContext(typeof(HermesChatDbContext))]
-    partial class HermesChatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231110112944_fix-user-profile-picture")]
+    partial class fixuserprofilepicture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,13 +194,11 @@ namespace HermesChat_TeamA.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserProfilePictures", (string)null);
                 });
@@ -370,10 +371,8 @@ namespace HermesChat_TeamA.Migrations
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.UserProfilePicture", b =>
                 {
                     b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.User", "User")
-                        .WithOne("UserProfilePicture")
-                        .HasForeignKey("HermesChat_TeamA.Areas.Identity.Data.Models.UserProfilePicture", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -437,9 +436,6 @@ namespace HermesChat_TeamA.Migrations
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.User", b =>
                 {
                     b.Navigation("ConversationUser");
-
-                    b.Navigation("UserProfilePicture")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

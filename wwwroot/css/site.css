@@ -38,7 +38,7 @@ body {
     color: #89023e;
     cursor: pointer;
 }
-.participants-list-column {
+#participants-list-column {
     display: flex;
     flex-direction: column;
     width: 350px;
@@ -48,6 +48,9 @@ body {
     align-items: stretch;
 }
 
+.hidden-sidebar{
+    display: none !important;
+}
 .participants-names {
     list-style-type: circle;
 }
@@ -163,6 +166,7 @@ body {
 
 }
 
+
 .message-input{
     display: flex;
     flex: 1 1 auto;
@@ -213,3 +217,4 @@ body {
 #input-file{
     display: none;
 }
+

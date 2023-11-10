@@ -25,7 +25,7 @@ namespace HermesChat_TeamA
             builder.Services.AddControllers();
             builder.Services.Configure<SmtpSettings>(options => builder.Configuration.GetSection("EmailConfiguration")); 
             
-          builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
           
 
@@ -50,6 +50,7 @@ namespace HermesChat_TeamA
             builder.Services.AddControllersWithViews();
 			// Add services to the container.
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            builder.Services.AddMvc();
 			builder.Services.AddRazorPages();
             builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>(); 
            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

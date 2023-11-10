@@ -1,8 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model UserProfilePicture
+
 @{
-    
+    ViewData["Title"] = "Profile";
+}
+
+@{
+
 }
 @using HermesChat_TeamA.Areas.Identity.Data.Models;
 @using Microsoft.AspNetCore.Identity;
@@ -13,10 +16,10 @@
 
 
 <div class="profile-main">
-   <div class="avatar">
-   <img src="~/Images/jinx.png" id="profile-picture"/>
-   <label for="input-file" class="update-button">Update image</label>
-    <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file"/>
+    <div class="avatar">
+        <img src="~/Images/jinx.png" id="profile-picture" />
+        <label for="input-file" class="update-button">Update image</label>
+        <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" />
     </div>
 
 
@@ -32,12 +35,48 @@
     </div>
 
 </div>
-    <script>
+
+<script>
+   
 
     let profilePicture = document.getElementById("profile-picture");
     let inputFile = document.getElementById("input-file");
 
-        inputFile.onchange = function () {
-            profilePicture.src = URL.createObjectURL(inputFile.files[0])
-        }
-    </script>
+    inputFile.onchange = function () {
+        var file = inputFile.files[0];
+        profilePicture.src = URL.createObjectURL(file);
+
+        // Create a FormData object to send the file to the server
+        var formData = new FormData();
+        formData.append('file', file);
+
+        // Define the URL of your .NET endpoint
+        var endpointUrl = '/Profile/UploadPicture';
+
+        // Use the fetch API to send the file as a POST request
+        fetch(endpointUrl, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+
+                    console.log('File uploaded successfully');
+                } else {
+
+                    console.error('File upload failed');
+                }
+            })
+            .catch(error => {
+
+                console.error('Network error:', error);
+            });
+    }
+
+
+
+</script>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+<script src="~/js/connectedUsers.js"></script>
