@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HermesChat_TeamA.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using HermesChat_TeamA.Services;
 
 namespace HermesChat_TeamA
 {
@@ -52,14 +53,17 @@ namespace HermesChat_TeamA
 			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddMvc();
 			builder.Services.AddRazorPages();
-            builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>(); 
-           // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-               // .AddCookie(option =>
-                //{
-                 //   option.LoginPath = "/Home/Index";
-                 //   option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                //});
-			builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>();
+            builder.Services.AddScoped<CurrentUserService>();
+            builder.Services.AddScoped<ImagesHandling>();
+            builder.Services.AddScoped<DataAccessService>();
+            // builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            // .AddCookie(option =>
+            //{
+            //   option.LoginPath = "/Home/Index";
+            //   option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+            //});
+            builder.Services.AddSignalR();
             builder.WebHost.UseStaticWebAssets();
 
             //builder.Services.AddServerSideBlazor().AddHubOptions(options => {

@@ -18,33 +18,33 @@ namespace HermesChat_TeamA.Services
         }
 
 
-        public void UploadProfilePicture(int id, string profilePicturePath, User user)
+        public void UploadProfilePicture(string profilePicturePath, User user)
         {
-            UserProfilePicture userProfilePicture = _context.UserProfilePictures.Find(id);
+            UserProfilePicture userProfilePicture = _context.UserProfilePictures.FirstOrDefault(a => a.UserId == user.Id);
 
-          //  kaip priskirti ką?
 
-            UserProfilePicture newUserProfilePicture = new UserProfilePicture {
-                Id = id,
+            UserProfilePicture newUserProfilePicture = new UserProfilePicture
+            {
                 User = user,
                 ProfilePicturePath = profilePicturePath,
             };
 
-            if (userProfilePicture != null) 
+            if (userProfilePicture != null)
             {
                 userProfilePicture.ProfilePicturePath = profilePicturePath;
+                userProfilePicture.User = user;
 
                 _context.Update(userProfilePicture);
 
-                _context.SaveChanges();
             }
 
-           else 
-           { 
+            else
+            {
                 _context.UserProfilePictures.Add(newUserProfilePicture);
 
-                _context.SaveChanges();
-           }
+            }
+
+            _context.SaveChanges();
         }
     }
 }
