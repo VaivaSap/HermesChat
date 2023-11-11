@@ -10,22 +10,12 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-    <div>
+<div>
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <div class="participants-list-column">
+        <div id="participants-list-column">
             <div class="grouped-buttons">
-
-                @*   <select id="group">
-            <option value="All">All Connected Users</option>
-            <option value="Group">Group Chat</option>
-            </select> *@
-
-                @* <button class="chat-button btn-primary">
-            Private Chat
-            </button> *@
-
 
 
                 <div>
@@ -51,9 +41,7 @@
 
                     <div class="online-users-list"><span id="usersOnlineConnectionId" /></div>
 
-
-                    <ul>
-                        @* <li id="onlineUsersList"></li> *@
+                    <ul style="list-style-type:none;">
                         <li><span id="connectedUserId" /></li>
                     </ul>
 
@@ -70,8 +58,8 @@
 
                 </div>
 
-        @* chosen by clicking with a mouse *@
-        <input hidden id="jsResultUserName" type="text" value=""/>
+                @* chosen by clicking with a mouse *@
+                <input hidden id="jsResultUserName" type="text" value="" />
                 <input hidden id="jsResultGroupName" type="text" value="" />
                 <div>
                 </div>
@@ -83,7 +71,13 @@
 
     else
     {
-      
+
     }
 
 </div>
+
+<script>
+    if (window.location.pathname.toLowerCase().includes("/profile")) {
+        document.getElementById("participants-list-column").classList.add("hidden-sidebar");
+    }
+</script>

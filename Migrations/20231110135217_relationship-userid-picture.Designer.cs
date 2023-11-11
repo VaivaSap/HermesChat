@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HermesChat_TeamA.Migrations
 {
     [DbContext(typeof(HermesChatDbContext))]
-    [Migration("20231015133955_creating-new-databases")]
-    partial class creatingnewdatabases
+    [Migration("20231110135217_relationship-userid-picture")]
+    partial class relationshipuseridpicture
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,6 +161,9 @@ namespace HermesChat_TeamA.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -176,6 +179,30 @@ namespace HermesChat_TeamA.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.UserProfilePicture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ProfilePicturePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfilePictures", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -343,6 +370,17 @@ namespace HermesChat_TeamA.Migrations
                     b.Navigation("Conversation");
                 });
 
+            modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.UserProfilePicture", b =>
+                {
+                    b.HasOne("HermesChat_TeamA.Areas.Identity.Data.Models.User", "User")
+                        .WithOne("UserProfilePicture")
+                        .HasForeignKey("HermesChat_TeamA.Areas.Identity.Data.Models.UserProfilePicture", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -402,6 +440,9 @@ namespace HermesChat_TeamA.Migrations
             modelBuilder.Entity("HermesChat_TeamA.Areas.Identity.Data.Models.User", b =>
                 {
                     b.Navigation("ConversationUser");
+
+                    b.Navigation("UserProfilePicture")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -17,17 +17,23 @@ public class HermesChatDbContext : IdentityDbContext<User>
     public DbSet<ConnectionLog> ConnectionLogs { get; set; }
     public DbSet<ConversationUser> ConversationUsers { get; set; }
 
+    public DbSet<UserProfilePicture> UserProfilePictures { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
         //builder.Entity<User>().HasMany(c => c.ConversationUser).WithOne(k => k.User);
         //builder.Entity<ConversationUser>().HasOne(c => c.Conversation).WithMany(t => ConversationUsers);
         builder.Entity<Conversation>().ToTable("Conversation");
         builder.Entity<ConversationUser>().ToTable("ConversationUser");
         builder.Entity<Message>().ToTable("Message");
         builder.Entity<ConnectionLog>().ToTable("ConnectionLog");
-        base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+        builder.Entity<UserProfilePicture>().ToTable("UserProfilePictures");
+
+        builder.Entity<User>()
+       .HasOne(u => u.UserProfilePicture)
+       .WithOne(p => p.User)
+       .HasForeignKey<UserProfilePicture>(p => p.UserId);
+
     }
 }
