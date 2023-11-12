@@ -12,23 +12,23 @@ using HermesChat_TeamA.Services;
 namespace HermesChat_TeamA
 {
     public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-			builder.Services.AddDbContext<HermesChatDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<HermesChatDbContext>(options => options.UseSqlServer(connectionString));
 
-			builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChat_TeamA.Areas.Identity.Data.HermesChatDbContext>();
-         
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChat_TeamA.Areas.Identity.Data.HermesChatDbContext>();
+
 
             builder.Services.AddControllers();
-            builder.Services.Configure<SmtpSettings>(options => builder.Configuration.GetSection("EmailConfiguration")); 
-            
+            builder.Services.Configure<SmtpSettings>(options => builder.Configuration.GetSection("EmailConfiguration"));
+
             builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-          
+
 
             builder.Services.AddSwaggerGen(c =>
             {
@@ -44,15 +44,15 @@ namespace HermesChat_TeamA
                         Url = new Uri("https://example.com/contact"),
                     },
                 });
-			//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChatDbContext>();
+                //builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<HermesChatDbContext>();
 
             });
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-			// Add services to the container.
-			builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            // Add services to the container.
+            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddMvc();
-			builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages();
             builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>();
             builder.Services.AddScoped<CurrentUserService>();
             builder.Services.AddScoped<ImagesHandling>();
@@ -72,13 +72,13 @@ namespace HermesChat_TeamA
 
             var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (!app.Environment.IsDevelopment())
-			{
-				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -90,22 +90,30 @@ namespace HermesChat_TeamA
             }
 
             app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseRouting();
             app.UseAuthentication();
-			app.UseAuthorization();
-             
-			app.MapControllerRoute(
-				name: "default",
- 				pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseAuthorization();
+            app.UseAuthorization();
 
-			app.MapHub<SyncHub>("/SyncHub");
-			app.MapHub<ConnectedUsersHub>("/ConnectedUsersHub");
-			app.MapRazorPages();
-	
-			
-			app.Run();
-		}
-	}
+            //pridėta dėl API
+
+            app.UseEndpoints(endpoints =>
+            {
+                app.MapControllerRoute(
+                    name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+            });
+
+
+            app.MapHub<SyncHub>("/SyncHub");
+            app.MapHub<ConnectedUsersHub>("/ConnectedUsersHub");
+            app.MapRazorPages();
+
+
+            app.Run();
+        }
+    }
 }

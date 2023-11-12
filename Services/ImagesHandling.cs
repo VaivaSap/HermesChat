@@ -46,5 +46,20 @@ namespace HermesChat_TeamA.Services
 
             _context.SaveChanges();
         }
+
+        public string ReturnUpdatedProfilePicture(User user)
+        {
+            UserProfilePicture userProfilePicture = _context.UserProfilePictures.FirstOrDefault(a => a.UserId == user.Id);
+
+            if(userProfilePicture != null)
+            {
+                return userProfilePicture.ProfilePicturePath;
+            }
+            else
+            {
+                return "Something went wrong";
+            }
+
+        }
     }
 }

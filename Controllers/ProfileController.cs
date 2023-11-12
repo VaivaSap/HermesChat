@@ -35,7 +35,7 @@ namespace HermesChat_TeamA.Controllers
         [HttpPost]
         public IActionResult UploadPicture()
         {
-            string uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+            string uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images");
             Directory.CreateDirectory(uploadDirectory);
 
             var userProfilePicture = Request.Form.Files[0];
@@ -44,6 +44,7 @@ namespace HermesChat_TeamA.Controllers
             {
               
                 string filePath = Path.Combine(uploadDirectory, userProfilePicture.FileName);
+               
 
                
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -52,11 +53,24 @@ namespace HermesChat_TeamA.Controllers
                 }
 
               
-                _imagesHandling.UploadProfilePicture(filePath, _currentUserService.GetCurrentUser(User));
+                _imagesHandling.UploadProfilePicture($"Images/{userProfilePicture.FileName}", _currentUserService.GetCurrentUser(User));
 
             }
 
             return RedirectToAction("Profile");
+        }
+
+      
+
+
+        [HttpGet]
+        public IActionResult GetUserProfilePicture()
+        {
+            var newUserProfilePicture =_imagesHandling.ReturnUpdatedProfilePicture(_currentUserService.GetCurrentUser(User));
+            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}";
+            var profilePictureUrl = $"{baseUrl}/{newUserProfilePicture}";
+
+            return Ok(profilePictureUrl);
         }
 
 
