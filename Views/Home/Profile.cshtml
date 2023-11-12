@@ -17,7 +17,7 @@
 
 <div class="profile-main">
     <div class="avatar">
-        <img src="~/Images/jinx.png" id="profile-picture" />
+        <img src="~/Images/no-profile-picture.png" id="profile-picture" />
         <label for="input-file" class="update-button">Update image</label>
         <input type="file" accept="image/jpeg, image/png, image/jpg" id="input-file" />
     </div>
@@ -46,11 +46,9 @@
         var file = inputFile.files[0];
         profilePicture.src = URL.createObjectURL(file);
 
-        // Create a FormData object to send the file to the server
         var formData = new FormData();
         formData.append('file', file);
 
-        // Define the URL of your .NET endpoint
         var endpointUrl = '/Profile/UploadPicture';
 
         // Use the fetch API to send the file as a POST request
@@ -74,6 +72,25 @@
     }
 
 
+    var profilePictureUrl = "/Profile/GetUserProfilePicture";
+
+    fetch(profilePictureUrl)
+        .then(response => {
+            if (response.ok) {
+               return response.text();
+               
+            } else {
+                console.error('Failed to fetch profile picture URL');
+            }
+        })
+        .then(data => {
+            if (data) {
+                profilePicture.src = data;
+            }
+        })
+        .catch(error => {
+            console.error('Network error:', error);
+        });
 
 </script>
 
