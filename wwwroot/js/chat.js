@@ -2,7 +2,7 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/SyncHub").build();
 
-document.getElementById("sendButton").disabled = true;
+//document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (user, message, sentAt, groupName) {
     console.log("ReceiveMessage", user, message);
@@ -24,23 +24,23 @@ connection.start().then(function () {
         document.getElementById("connectionId").innerText = id;
         console.log(id);
     });
-    document.getElementById("sendButton").disabled = false;
+    //document.getElementById("sendButton").disabled = false;
 }).catch(function (err) {
     return console.error(err.toString());
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("userInput").value;
-    var message = document.getElementById("messageInput").value;
-    console.log(connection);
+//document.getElementById("sendButton").addEventListener("click", function (event) {
+//    var user = document.getElementById("userInput").value;
+//    var message = document.getElementById("messageInput").value;
+//    console.log(connection);
 
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
-    });
+//    connection.invoke("SendMessage", user, message).catch(function (err) {
+//        return console.error(err.toString());
+//    });
 
-    event.preventDefault();
+//    event.preventDefault();
 
-});
+//});
 
 
 document.getElementById("sendToParticularUser").addEventListener("click", function (event) {
