@@ -38,7 +38,7 @@ connectionUsersCount.start().then(function () {
 
                 event.target.classList.add("activeChatBold"); 
 
-                let user = document.getElementById("userInput").value;;
+                let user = document.getElementById("userInput").value;
 
 
                 connectionUsersCount.invoke("AddClickerToGroup", groupName, user).catch(function (err) {
@@ -87,8 +87,8 @@ connectionUsersCount.start().then(function () {
 
     });
 
-    document.getElementById("sendButton").disabled = false;
-    document.getElementById("sendButton").disabled = false;
+   // document.getElementById("sendButton").disabled = false;
+    //document.getElementById("sendButton").disabled = false;
 
     function newWindowLoadedOnClient() {
         connectionUsersCount.send("NewWindowLoaded");
