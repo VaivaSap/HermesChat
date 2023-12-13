@@ -46,11 +46,12 @@ connection.start().then(function () {
 document.getElementById("sendToParticularUser").addEventListener("click", function (event) {
     var user = document.getElementById("userInput").value;
 
-    //var receiver = document.getElementById("jsResultUserName").value;
-    var receiverConnectionId = document.getElementById("receiverId").value;
-    var message = document.getElementById("messageInput").value;
+    var receiver = document.getElementById("jsResultUserName").value; //ateina jsResultUserName paspaudus
+    //var receiverConnectionId = document.getElementById("receiverId").value;
+    var message = document.getElementById("messageInput").value; //backend ateina jsResulUserName siųsta privati žinutė
+    console.log(message);
 
-    connection.invoke("SendToParticularUser", user, receiverConnectionId, message).catch(function (err) {
+    connection.invoke("SendToParticularUser", user, receiver, message).catch(function (err) {
         return console.error(err.toString());
     });
 
@@ -132,3 +133,7 @@ document.getElementById("SendMessageToGroup").addEventListener("click", function
     event.preventDefault();
 
 });
+
+//connection.on("ReceiveMessage", function (messages) {
+//    // Handle incoming messages and update the UI
+//});

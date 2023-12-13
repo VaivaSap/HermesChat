@@ -87,7 +87,7 @@ connectionUsersCount.start().then(function () {
 
     });
 
-   // document.getElementById("sendButton").disabled = false;
+
     //document.getElementById("sendButton").disabled = false;
 
     function newWindowLoadedOnClient() {
@@ -138,10 +138,10 @@ connectionUsersCount.on("OnlineUsersList", (connectedUsers) => {
         });
     }
 
-    function selectUserToChat(userName) {
+    function selectUserToChat(receiver) {
 
-        document.getElementById("jsResultUserName").value = userName;
-        console.log(`Selected user: ${userName}`);
+        document.getElementById("jsResultUserName").value = receiver;
+        console.log(`Selected user: ${receiver}`);
 
     }
 });
