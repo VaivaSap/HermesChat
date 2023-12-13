@@ -16,11 +16,11 @@ namespace HermesChat_TeamA.Services
             _context = context;
         }
 
-        public void CreateMessage(string receiverConnectionId, string message, string currentUserName)
+        //žinutės sukuriamos tiek privačios, tiek grupinės
+        public void CreateMessage(string receiver, string message, string currentUserName)
         {
-            var CurrentReceiver = _context.Users.FirstOrDefault
-            (u => u.Id == _context.ConnectionLogs.FirstOrDefault
-            (u => u.Connection == receiverConnectionId).ConnectedUserId);
+            var CurrentReceiver = _context.Users.FirstOrDefault(u => u.UserName == receiver);
+
             var CurrentSender = _context.Users.FirstOrDefault(u => u.UserName == currentUserName);
 
             var conversation = ReturnConversationOfUsers(CurrentReceiver, CurrentSender);
@@ -30,16 +30,19 @@ namespace HermesChat_TeamA.Services
             _context.SaveChanges();
         }
 
-       
+        //public Conversation ReturnPrivateConversation(User receiver, User sender)
+        //{
 
-        public Conversation ReturnConversationOfUsers(User receiver, User sender) 
+        //}
+
+        public Conversation ReturnConversationOfUsers(User receiver, User sender)
         {
             var ReceiversConversations = _context.ConversationUsers.Where(c => c.User == receiver).ToList();
             var SenderConversations = _context.ConversationUsers.Where(c => c.User == sender).ToList();
-            Conversation conversation = null;
-            if (ReceiversConversations.Any() && SenderConversations.Any()) 
+            Conversation conversation = null; //null?
+            if (ReceiversConversations.Any() && SenderConversations.Any())
             {
-                while (conversation == null) 
+                while (conversation == null)
                 {
                     foreach (var ConversationUser in ReceiversConversations)
                     {
@@ -52,10 +55,10 @@ namespace HermesChat_TeamA.Services
                         }
                     }
                 }
-                
+
             }
-            
-            if (conversation == null) 
+
+            if (conversation == null)
             {
                 conversation = new Conversation();
                 var conversationReceiver = new ConversationUser { Conversation = conversation, User = receiver };
@@ -68,24 +71,28 @@ namespace HermesChat_TeamA.Services
                 conversation.ConversationUser.Add(conversationSender);
 
                 _context.SaveChanges();
-                
+
             }
             return conversation;
         }
 
-        public List<Message> ReturnTopMessagesFromUsers(string senderUserName, string receiverConnectionId, int number) 
+        public List<Message> ReturnTopMessagesFromUsers(string senderUserName, string receiver, int number)
         {
-            var CurrentReceiver = _context.Users.FirstOrDefault
-            (u => u.Id == _context.ConnectionLogs.FirstOrDefault
-            (u => u.Connection == receiverConnectionId).ConnectedUserId);
+            var CurrentReceiver = _context.Users.FirstOrDefault(u => u.UserName == receiver);
             var CurrentSender = _context.Users.FirstOrDefault(u => u.UserName == senderUserName);
 
             var conversation = ReturnConversationOfUsers(CurrentReceiver, CurrentSender);
-            
-            var result = _context.Messages.FromSql($"SELECT TOP ({number}) * FROM [HermesChatDB].[dbo].[Message] WHERE [ConversationId] = {conversation.Id}").ToList();
-            
-            return result;
+
+            if (conversation != null)
+            {
+
+                var result = _context.Messages.FromSql($"SELECT TOP ({number}) * FROM [HermesChatDB].[dbo].[Message] WHERE [ConversationId] = {conversation.Id}").ToList();
+
+                return result;
+            }
+            else return new List<Message>();
         }
+
 
         public void CheckIfExistAndCreateConnectionLog(string connectionId, string currentUserName)
         {
@@ -104,3 +111,4 @@ namespace HermesChat_TeamA.Services
 
     }
 }
+

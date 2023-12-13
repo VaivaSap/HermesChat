@@ -74,10 +74,6 @@ public class ConnectedUsersHub : Hub
     }
 
 
-
-
-
-
     public string GetOnlineUsersConnectionId()
     {
         return Context.ConnectionId;
