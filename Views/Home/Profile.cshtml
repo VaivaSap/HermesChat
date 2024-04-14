@@ -14,7 +14,6 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-
 <div class="profile-main">
     <div class="avatar">
         <img src="~/Images/no-profile-picture.png" id="profile-picture" />
@@ -33,7 +32,7 @@
             <li class="status">Status: Passionate about tech</li>
         </ul>
     </div>
-
+    <div id="time"></div>
 </div>
 
 <script>
@@ -97,3 +96,14 @@
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
 <script src="~/js/connectedUsers.js"></script>
+<script>
+    function updateTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        document.getElementById('time').innerHTML = hours + ':' + minutes + ':' + seconds;
+    }
+
+    setInterval(updateTime, 1000);
+</script>

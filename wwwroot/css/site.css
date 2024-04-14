@@ -178,7 +178,8 @@ body {
     display: flex;
     width: 100%;
     border: 15px solid #89023e;
-    background-color: #cfdbd5
+    background-color: #cfdbd5;
+    position: relative;
 }
 
 .info-box {
@@ -201,11 +202,19 @@ body {
     font-weight: 600;
 }
 
+#time {
+    position: absolute;
+    bottom: 15px;
+    right: 11px;
+    color: #89023e;
+    font-weight: 300;
+}
+
 .update-button {
     display: block;
-    text-align:center;
+    text-align: center;
     width: 200px;
-    height:30px;
+    height: 30px;
     background: #89023e;
     color: #cfdbd5;
     padding: 12px;

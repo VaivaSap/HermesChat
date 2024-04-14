@@ -24,7 +24,7 @@ connection.start().then(function () {
         document.getElementById("connectionId").innerText = id;
         console.log(id);
     });
-    //document.getElementById("sendButton").disabled = false;
+    
 }).catch(function (err) {
     return console.error(err.toString());
 });

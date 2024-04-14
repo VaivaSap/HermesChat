@@ -16,30 +16,42 @@ namespace HermesChat_TeamA.Services
             _context = context;
         }
 
-        //žinutės sukuriamos tiek privačios, tiek grupinės
-        public void CreateMessage(string receiver, string message, string currentUserName)
+        //žinutės sukuriamos tiek privačios, tiek grupinės (neišsisaugo duomenų bazėje)
+        public void CreateMessage(string currentUserName, string receiver, string message)
         {
-            var CurrentReceiver = _context.Users.FirstOrDefault(u => u.UserName == receiver);
-
             var CurrentSender = _context.Users.FirstOrDefault(u => u.UserName == currentUserName);
 
-            var conversation = ReturnConversationOfUsers(CurrentReceiver, CurrentSender);
+            var CurrentReceiver = _context.Users.FirstOrDefault(u => u.UserName == receiver);
 
-            var newMessage = new Message { MessageBody = message, TimeSent = DateTime.Now.ToString(), Conversation = conversation };
-            _context.Messages.Add(newMessage);
-            _context.SaveChanges();
+            var CurrentReceivingGroup = _context.Conversations.FirstOrDefault(g => g.Name == receiver); 
+
+            //What Anna called conversation, I call group in my code
+            Conversation conversation;
+
+            if (CurrentReceiver != null)
+            {
+                conversation = ReturnConversationOfUsers(CurrentSender, CurrentReceiver);
+
+                var newMessage = new Message { MessageBody = message, TimeSent = DateTime.Now.ToString(), Conversation = conversation };
+                _context.Messages.Add(newMessage);
+                _context.SaveChanges();
+            }
+
+            else if(CurrentReceivingGroup != null)
+            {
+                conversation = CurrentReceivingGroup;
+
+                var newMessage = new Message { MessageBody = message, TimeSent = DateTime.Now.ToString(), Conversation = conversation };
+                _context.Messages.Add(newMessage);
+                _context.SaveChanges();
+            }
         }
-
-        //public Conversation ReturnPrivateConversation(User receiver, User sender)
-        //{
-
-        //}
 
         public Conversation ReturnConversationOfUsers(User receiver, User sender)
         {
             var ReceiversConversations = _context.ConversationUsers.Where(c => c.User == receiver).ToList();
             var SenderConversations = _context.ConversationUsers.Where(c => c.User == sender).ToList();
-            Conversation conversation = null; //null?
+            Conversation conversation = null; 
             if (ReceiversConversations.Any() && SenderConversations.Any())
             {
                 while (conversation == null)
