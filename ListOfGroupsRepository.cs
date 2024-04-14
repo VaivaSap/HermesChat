@@ -1,5 +1,6 @@
-﻿using HermesChat_TeamA.Areas.Identity.Data.Models;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using HermesChat_TeamA.Areas.Identity.Data;
+using HermesChat_TeamA.Areas.Identity.Data.Models;
+using HermesChat_TeamA.Services;
 
 
 namespace HermesChat_TeamA
@@ -21,16 +22,27 @@ namespace HermesChat_TeamA
     {
         ListOfGroupsRepository _groupsRepository;
 
+        private readonly HermesChatDbContext _context;
+        DataAccessService _dataAccessService;
+        CurrentUserService _currentUserService;
 
-        private readonly Dictionary<string, List<string>> groupChats = new Dictionary<string, List<string>>();
+        public ListOfGroupsRepository(HermesChatDbContext context)
+        {
+            _context = context;
+        }
 
         public bool CreateNewGroupChat(string groupName)
         {
-            if (!groupChats.ContainsKey(groupName.Trim()))
-            {
-                groupChats.Add(groupName.Trim(), new List<string>());
+            groupName = groupName.Trim();
 
-                return true;
+            if (!_context.Conversations.Any(g => g.Name == groupName))
+            {
+                var newConversation = new Conversation { Name = groupName };
+
+                _context.Conversations.Add(newConversation);
+
+                _context.SaveChanges();
+
             }
 
             return false;
@@ -38,96 +50,113 @@ namespace HermesChat_TeamA
 
         public List<string> GetUsersGroupChatList(string userName)
         {
-            var userGroupChats = groupChats.Where(a => a.Value.Contains(userName))
-                                       .Select(a => a.Key)
-                                       .ToList();
+            var userGroupChats = _context.Conversations
+                .Where(c => c.ConversationUser.Any(u => u.User.UserName == userName))
+                .Select(c => c.Name)
+                .ToList();
 
             return userGroupChats;
         }
 
         public List<string> GetAllActiveChats()
         {
+            var allActiveChats = _context.Conversations.Select(c => c.Name).ToList();
 
-            var allActiveChats = groupChats.Keys.ToList();
             return allActiveChats;
         }
 
-        public bool AddUserToGroupChat(string groupName, string user)
+        public bool AddUserToGroupChat(string groupName, string userName) // Kai pats prisijungia
+                                                                          
         {
             groupName = groupName.Trim();
-            if (!groupChats.ContainsKey(groupName))
+            var conversation = _context.Conversations.FirstOrDefault(c => c.Name == groupName);
+            var user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+
+            if (conversation == null)
             {
-                groupChats.Add(groupName, new List<string> { user });
+                conversation = new Conversation
+                {
+                    Name = groupName,
+                    ConversationUser = new List<ConversationUser> { new ConversationUser { User = user } }
+                };
 
-                return true;
-
+                _context.Conversations.Add(conversation);
             }
 
-            if (!groupChats[groupName].Contains(user))
+            else
             {
-                groupChats[groupName].Add(user);
-
-                return true;
-
+                conversation.ConversationUser.Add(new ConversationUser { User = user });
             }
 
-            return false;
+            _context.SaveChanges();
+            return true;
+
         }
 
-        public bool AddClickerToGroup(string groupName, string user)
+
+
+    public bool AddClickerToGroup(string groupName, string userName)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+        groupName = groupName.Trim();
+
+        if (!_context.Conversations.Any(c => c.ConversationUser.Any(u => u.User.UserName == userName)))
         {
-            groupName = groupName.Trim();
-            if (!groupChats[groupName].Contains(user))
-
+            var conversation = new Conversation
             {
-                groupChats.Add(groupName, new List<string> { user });
 
-                return true;
-            }
-
-            return false;
+                Name = groupName,
+                ConversationUser = new List<ConversationUser> { new ConversationUser { User = user } }
+            };
+            _context.Conversations.Add(conversation);
+            _context.SaveChanges();
+            return true;
         }
 
-            public int UsersCountInGroupChat(string groupName)
-            {
-                if (groupChats.ContainsKey(groupName))
-                {
-                    var userCountInGroup = groupChats[groupName].Count();
-                    return userCountInGroup;
-                }
-
-                return 0;
-            }
-
-            public string RemoveUserFromGroupChat(string groupName, string user)
-            {
-                if (groupChats.ContainsKey(groupName))
-                {
-                    groupChats[groupName].Remove(user);
-
-                    return "The user removed successfully.";
-                }
-
-                return "We did not found it.";
-
-            }
-
-            public string RemoveGroupFromGroupChatList(string groupName)
-            {
-                if (groupChats.ContainsKey(groupName))
-                {
-                    groupChats.Remove(groupName);
-
-                    return "This group chat was closed.";
-                }
-
-                return "We haven't found a chat with this title. Please check it.";
-            }
-        }
+        return false;
     }
 
+    public int UsersCountInGroupChat(string groupName)
+    {
+        var conversation = _context.Conversations.FirstOrDefault(c => c.Name == groupName);
+        if (conversation != null)
+        {
+            return conversation.ConversationUser.Count();
+        }
+        return 0;
+    }
 
+    public string RemoveUserFromGroupChat(string groupName, string userName)
+    {
+        var conversation = _context.Conversations.FirstOrDefault(c => c.Name == groupName);
+        if (conversation != null)
+        {
+            var user = conversation.ConversationUser.FirstOrDefault(u => u.User.UserName == userName);
+            if (user != null)
+            {
 
+                conversation.ConversationUser.Remove(user);
+                _context.SaveChanges();
+                return "The user removed successfully.";
+            }
 
+        }
 
+        return "We did not found it.";
 
+    }
+
+    public string RemoveGroupFromGroupChatList(string groupName)
+    {
+        var conversation = _context.Conversations.FirstOrDefault(c => c.Name == groupName);
+        if (conversation != null)
+        {
+            _context.Conversations.Remove(conversation);
+            _context.SaveChanges();
+            return "This group chat was closed.";
+        }
+
+        return "We haven't found a chat with this title. Please check it.";
+    }
+}
+}

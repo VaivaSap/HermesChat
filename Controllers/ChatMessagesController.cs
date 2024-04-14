@@ -33,9 +33,9 @@ namespace HermesChat_TeamA.Controllers
         //[HttpGet]
         //public IActionResult GetTopMessagesOfUsers()
         //{
-        //    var receiverId = ;
+        //    var receiver = ;
         //    int numberOfMessagesDisplayed = 100;
-        //    var messages = _dataAccessService.ReturnTopMessagesFromUsers(_currentUserService.GetCurrentUser(User), _currentUserService.GetCurrentUser(User)(pasiimti iš frontend), numberOfMessagesDisplayed);
+        //    var messages = _dataAccessService.ReturnTopMessagesFromUsers(_currentUserService.GetCurrentUser(User), _currentUserService.GetCurrentUser(User), numberOfMessagesDisplayed);
 
 
         //    return Ok(messages);

@@ -53,7 +53,7 @@ namespace HermesChat_TeamA
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddMvc();
             builder.Services.AddRazorPages();
-            builder.Services.AddSingleton<IListOfGroupsRepository, ListOfGroupsRepository>();
+            builder.Services.AddScoped<IListOfGroupsRepository, ListOfGroupsRepository>();
             builder.Services.AddScoped<CurrentUserService>();
             builder.Services.AddScoped<ImagesHandling>();
             builder.Services.AddScoped<DataAccessService>();
